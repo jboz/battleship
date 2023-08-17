@@ -1,0 +1,12 @@
+.ul {
+  display: flex;
+  gap: 2em;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid 1px;
+  padding-bottom: 1em;
+}
+
+.ul li {
+  list-style: none;
+}
