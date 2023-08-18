@@ -1,13 +1,12 @@
-import Grid from "@/app/(core)/components/grid";
+import Board from "@/app/(core)/components/board";
 import styles from './page.module.css';
 
 export default function Game() {
 
   return (
     <div className={styles.main}>
-      <h1>Game</h1>
-      <Grid />
-      <Grid />
+      <h1>New game</h1>
+      <Board />
     </div>
   )
 }

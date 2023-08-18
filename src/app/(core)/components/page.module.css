@@ -1,22 +1,89 @@
-.grid {
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 3em;
+  align-items: center;
+}
+
+.boardContainer {
+  display: flex;
+  width: 100%;
+  gap: 3em;
+  justify-content: center;
+}
+
+.board {
   display: grid; 
-  grid-template-columns: repeat(11, 1fr);
-  grid-template-rows: repeat(11, 1fr);
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
   gap: 0px 0px; 
 }
 
-.grid > div {
+.cell {
+  width: 20px;
+  height: 20px;
+  background-color: #fff; 
+  padding: 15px;
+  border: solid 2px #272138;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.boardContainerX {
+  display: flex;
+  flex-direction: column;
+}
+
+.boardContainerY {
+  display: flex;
+}
+
+.boardHeaderX {
+  display: grid; 
+  grid-template-columns: repeat(11, 1fr);
+  grid-template-rows: 1fr;
+  gap: 0px 0px; 
+}
+
+.boardHeaderY {
+  display: grid; 
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(10, 1fr);
+  gap: 0px 0px; 
+}
+
+.header {
   width: 20px;
   height: 20px;
   background-color: #6b59aa; 
-  margin: 2px;
+  border: solid 2px #272138;
   padding: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.cell {
-  cursor: pointer;
-  background-color: #fff !important; 
+.ships {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.ship {
+  display: flex;
+  width: fit-content;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+
+.toolbar button {
+  padding: 1em;
 }
