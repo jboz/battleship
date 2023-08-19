@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from 'react';
+import Board from './board';
 import styles from './page.module.css';
 
 interface HomeBoardProps {
@@ -8,12 +9,8 @@ interface HomeBoardProps {
 }
 
 export default function HomeBoard({started}: HomeBoardProps) {
-  const lines = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-  const columns = ['', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   const dimensions = Array.from({ length: 10 }, (_, i) => i + 1);
-
-  const [placementMode, setPlacementMode] = useState<'vertical' | 'horizontal'>('horizontal');
-
+  
   const [ships, setShips] = useState<Ship[]>([
     { id: 1, name: 'Carrier', size: 5, color: '#be456e' },
     { id: 2, name: 'Battleship', size: 4, color: '#0494ff' },
@@ -24,15 +21,12 @@ export default function HomeBoard({started}: HomeBoardProps) {
     // { id: 7, name: 'Submarine', size: 3, color: '#04ffde' },
     { id: 8, name: 'Destroyer', size: 2, color: '#af54a0' },
   ]);
-
+  
   const newSquare = (x: number, y: number) => ({ coords: { x, y }, hasShip: false, isHit: false } as Square)
-
-  const [squares, setSquares] = useState<Square[]>(dimensions.map((x) => dimensions.map((y) => newSquare(x, y))).reduce((a, b) => [...a, ...b], []));
-
-  const headers = (data: string[]) => data.map((value) => (<><div key={value} className={styles.header}>{value}</div></>));
-
   const squareKey = (square: Square) => `${square.coords.x}:${square.coords.y}`;
-
+  
+  const [placementMode, setPlacementMode] = useState<'vertical' | 'horizontal'>('horizontal');
+  const [squares, setSquares] = useState<Square[]>(dimensions.map((x) => dimensions.map((y) => newSquare(x, y))).reduce((a, b) => [...a, ...b], []));
   const [selectedShip, setSelectedShip] = useState<Ship | undefined>(undefined);
 
   const squareOnClick = (clickedSquare: Square) => {
@@ -122,15 +116,9 @@ export default function HomeBoard({started}: HomeBoardProps) {
         <button onClick={() => reset()}>Reset</button>
       </div>)}
       <div className={styles.boardContainer}>
-        <div className={styles.boardContainerX}>
-          <div className={styles.boardHeaderX}>{headers(columns)}</div>
-          <div className={styles.boardContainerY}>
-            <div className={styles.boardHeaderY}>{headers(lines)}</div>
-            <div className={styles.board}>
-              {squares.map((square) => <BoardSquare key={squareKey(square)} square={square} onClick={squareOnClick} onMouseEnter={onMouseEnter} onMouseOut={onMouseOut} />)}
-            </div>
-          </div>
-        </div>
+        <Board>
+          {squares.map((square) => <BoardSquare key={squareKey(square)} square={square} onClick={squareOnClick} onMouseEnter={onMouseEnter} onMouseOut={onMouseOut} />)}
+        </Board>
 
         {!started && (<div className={styles.ships}>
           {ships.map((ship, index) => <ShipComponent key={'ship' + index} ship={ship} selectable={!ship.placed} onSelection={setSelectedShip} selected={selectedShip?.id === ship.id} />)}

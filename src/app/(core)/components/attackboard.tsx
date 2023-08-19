@@ -1,34 +1,24 @@
 "use client"
 
 import { useEffect, useState } from 'react';
+import Board from './board';
 import styles from './page.module.css';
 
 export default function AttackBoard() {
-  const lines = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-  const columns = ['', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   const dimensions = Array.from({ length: 10 }, (_, i) => i + 1);
 
+  const squareKey = (square: Square) => `${square.coords.x}:${square.coords.y}`;
   const newSquare = (x: number, y: number) => ({ coords: { x, y }, status: 'empty' } as Square)
 
-  const [squares, setSquares] = useState<Square[]>(dimensions.map((x) => dimensions.map((y) => newSquare(x, y))).reduce((a, b) => [...a, ...b], []));
-
-  const headers = (data: string[]) => data.map((value) => (<><div key={value} className={styles.header}>{value}</div></>));
-
-  const squareKey = (square: Square) => `${square.coords.x}:${square.coords.y}`;
+  const [squares] = useState<Square[]>(dimensions.map((x) => dimensions.map((y) => newSquare(x, y))).reduce((a, b) => [...a, ...b], []));
 
   return (
     <div className={styles.container}>
       <h1>Attack Board</h1>
       <div className={styles.boardContainer}>
-        <div className={styles.boardContainerX}>
-          <div className={styles.boardHeaderX}>{headers(columns)}</div>
-          <div className={styles.boardContainerY}>
-            <div className={styles.boardHeaderY}>{headers(lines)}</div>
-            <div className={styles.board}>
+        <Board>
               {squares.map((square) => <BoardSquare key={squareKey(square)} square={square} />)}
-            </div>
-          </div>
-        </div>
+        </Board>
       </div>
     </div>
   )
