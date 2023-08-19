@@ -81,18 +81,14 @@
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: var(--background-end-rgb);
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
+  padding: 2em;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -101,13 +97,13 @@ a {
   }
 }
 
-header {
-  padding: 2em;
-}
-
 main {
   padding-top: 4em;
   width: 100%;
   height: 100%;
   padding: 2em;
+}
+
+button {
+  padding: 0.5em;
 }

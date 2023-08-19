@@ -79,11 +79,15 @@
 
 .toolbar {
   display: flex;
-  justify-content: center;
+  width: 100%;
+  justify-content: space-around;
   align-items: center;
   gap: 1em;
 }
 
-.toolbar button {
-  padding: 1em;
+.toolbar > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
 }

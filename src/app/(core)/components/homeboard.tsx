@@ -3,7 +3,11 @@
 import { useState } from 'react';
 import styles from './page.module.css';
 
-export default function Board() {
+interface HomeBoardProps {
+  started: boolean;
+}
+
+export default function HomeBoard({started}: HomeBoardProps) {
   const lines = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
   const columns = ['', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   const dimensions = Array.from({ length: 10 }, (_, i) => i + 1);
@@ -102,32 +106,41 @@ export default function Board() {
     return undefined;
   }
 
+  const reset = () => {
+    setShips(ships.map(s => ({...s, placed: false})))
+    setSquares(squares.map(s => ({...s, ship: undefined})));
+  }
+
   return (
     <div className={styles.container}>
-      <div className={styles.toolbar}>
-        <button onClick={() => togglePlacementMode()}>toggle mode</button>
-        {placementMode}
-      </div>
+      {started && (<h1>Home Board</h1>)}
+      {!started && (<div className={styles.toolbar}>
+        <div>
+          <button onClick={() => togglePlacementMode()}>Toggle mode</button>
+          {placementMode}
+        </div>
+        <button onClick={() => reset()}>Reset</button>
+      </div>)}
       <div className={styles.boardContainer}>
         <div className={styles.boardContainerX}>
           <div className={styles.boardHeaderX}>{headers(columns)}</div>
           <div className={styles.boardContainerY}>
             <div className={styles.boardHeaderY}>{headers(lines)}</div>
             <div className={styles.board}>
-              {squares.map((square) => <SquareComponent key={squareKey(square)} square={square} selectedShip={selectedShip} onClick={squareOnClick} onMouseEnter={onMouseEnter} onMouseOut={onMouseOut} />)}
+              {squares.map((square) => <BoardSquare key={squareKey(square)} square={square} onClick={squareOnClick} onMouseEnter={onMouseEnter} onMouseOut={onMouseOut} />)}
             </div>
           </div>
         </div>
 
-        <div className={styles.ships}>
+        {!started && (<div className={styles.ships}>
           {ships.map((ship, index) => <ShipComponent key={'ship' + index} ship={ship} selectable={!ship.placed} onSelection={setSelectedShip} selected={selectedShip?.id === ship.id} />)}
-        </div>
+        </div>)}
       </div>
     </div>
   )
 }
 
-const SquareComponent = ({ square, onClick, onMouseEnter, onMouseOut }: BoardSquareProps) => {
+const BoardSquare = ({ square, onClick, onMouseEnter, onMouseOut }: BoardSquareProps) => {
 
   return <div className={styles.cell} style={{ backgroundColor: square.ship?.color || square.hoverColor || '#e6e2f1' }} onClick={() => onClick(square)} onMouseEnter={() => onMouseEnter(square)} onMouseOut={() => onMouseOut(square)}></div>
 }
@@ -148,7 +161,6 @@ interface ShipProps {
 
 interface BoardSquareProps {
   square: Square;
-  selectedShip: Ship | undefined;
   onClick: (square: Square) => any;
   onMouseEnter: (square: Square) => any;
   onMouseOut: (square: Square) => any;
