@@ -5,6 +5,7 @@
   gap: 2em;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  min-width: 308px;
 }
 
 .board {

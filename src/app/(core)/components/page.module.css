@@ -2,14 +2,15 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 3em;
+  gap: 1em;
   align-items: center;
 }
 
 .boardContainer {
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
-  gap: 3em;
+  gap: 1em;
   justify-content: center;
 }
 
@@ -69,7 +70,8 @@
 .ships {
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: 0.5em;
+  min-width: 170px;
 }
 
 .ship {
