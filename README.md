@@ -1,5 +1,7 @@
-Battleship game
+# Battleship game
 
-![preparation](https://)
+Web version of the famous battleship game.
 
-![game](https://)
+![Preparation](/docs/preparation.png)
+
+![Game](/docs/game.png)
