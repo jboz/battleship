@@ -1,0 +1,37 @@
+@API=http://localhost:3000/api
+
+### games
+GET {{API}}/games
+
+### create
+POST {{API}}/games
+Content-Type: application/json
+
+{
+    "name": "toto",
+    "player": "maé"
+}
+
+### game
+GET {{API}}/games/game01
+
+### join
+PUT {{API}}/games/game01/join
+Content-Type: application/json
+
+{
+    "name": "ju"
+}
+
+
+### hit
+PUT {{API}}/games/game01/hit
+Content-Type: application/json
+
+{
+    "playerId": "player1",
+    "coords": {
+        "x": 3,
+        "y": 1
+    }
+}

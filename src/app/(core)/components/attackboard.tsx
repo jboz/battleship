@@ -1,31 +1,35 @@
-"use client"
-
 import { useEffect, useState } from 'react';
+import { Coordinates } from '../model';
 import Board from './board';
 import styles from './page.module.css';
 
-export default function AttackBoard() {
+interface AttackBoardProps {
+  onClick: (coord: Coordinates) => any;
+}
+
+export default function AttackBoard({ onClick }: AttackBoardProps) {
   const dimensions = Array.from({ length: 10 }, (_, i) => i + 1);
 
   const squareKey = (square: Square) => `${square.coords.x}:${square.coords.y}`;
-  const newSquare = (x: number, y: number) => ({ coords: { x, y }, status: 'empty' } as Square)
+  const newSquare = (x: number, y: number) => ({ coords: { x, y }, status: 'empty' } as Square);
 
-  const [squares] = useState<Square[]>(dimensions.map((x) => dimensions.map((y) => newSquare(x, y))).reduce((a, b) => [...a, ...b], []));
+  const [squares] = useState<Square[]>(dimensions.map(x => dimensions.map(y => newSquare(x, y))).reduce((a, b) => [...a, ...b], []));
 
   return (
     <div className={styles.container}>
       <h1>Attack Board</h1>
       <div className={styles.boardContainer}>
         <Board>
-              {squares.map((square) => <BoardSquare key={squareKey(square)} square={square} />)}
+          {squares.map(square => (
+            <BoardSquare key={squareKey(square)} square={square} onClick={onClick} />
+          ))}
         </Board>
       </div>
     </div>
-  )
+  );
 }
 
-const BoardSquare = ({ square }: BoardSquareProps) => {
-
+const BoardSquare = ({ square, onClick }: BoardSquareProps) => {
   const [backgroundColor, setBackgroundColor] = useState<string>('#e6e2f1');
   const [status, setStatus] = useState(square.status);
 
@@ -43,18 +47,15 @@ const BoardSquare = ({ square }: BoardSquareProps) => {
     } else if (square.status === 'touched') {
       setStatus('empty');
     }
-  }
+    onClick(square.coords);
+  };
 
-  return <div className={styles.cell} style={{ backgroundColor }} onClick={toggleStatus}></div>
-}
+  return <div className={styles.cell} style={{ backgroundColor }} onClick={toggleStatus}></div>;
+};
 
 interface BoardSquareProps {
   square: Square;
-}
-
-interface Coordinates {
-  x: number;
-  y: number;
+  onClick: (coord: Coordinates) => any;
 }
 
 interface Square {

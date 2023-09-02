@@ -1,7 +1,6 @@
 import styles from './page.module.css';
 
-export default function Board({ children, }: { children: React.ReactNode; }) {
-
+export default function Board({ children }: { children: React.ReactNode }) {
   return (
     <div className={styles.boardContainerX}>
       <div className={styles.boardHeaderX}>
@@ -30,10 +29,8 @@ export default function Board({ children, }: { children: React.ReactNode; }) {
           <div className={styles.header}>9</div>
           <div className={styles.header}>10</div>
         </div>
-        <div className={styles.board}>
-          {children}
-        </div>
+        <div className={styles.board}>{children}</div>
       </div>
     </div>
-  )
+  );
 }
