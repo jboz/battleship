@@ -20,7 +20,7 @@ PUT {{API}}/games/game01/join
 Content-Type: application/json
 
 {
-    "name": "ju"
+    "player": "ju"
 }
 
 

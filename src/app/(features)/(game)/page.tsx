@@ -3,8 +3,8 @@
 import GameApi from '@/app/(core)/api.service';
 import AttackBoard from '@/app/(core)/components/attackboard';
 import HomeBoard from '@/app/(core)/components/homeboard';
-import { Coordinates, PlayerId, Ship } from '@/app/(core)/model';
-import { useState } from 'react';
+import { BusPayload, Coordinates, PlayerId, Ship } from '@/app/(core)/model';
+import { useEffect, useState } from 'react';
 import styles from './page.module.scss';
 
 export default function Game() {
@@ -24,7 +24,23 @@ export default function Game() {
   const [playerNameJoin, setPlayerNameJoin] = useState('');
   const [gameId, setGameId] = useState('');
   const [playerId, setPlayerId] = useState<PlayerId>();
-  const [onlineStatus, setOnlineStatus] = useState('');
+
+  const [connection, setConnection] = useState<EventSource>();
+
+  useEffect(() => {
+    if (started && gameId && playerId) {
+      setConnection(GameApi.connect(gameId, playerId));
+    }
+  }, [started, gameId, playerId]);
+
+  useEffect(() => {
+    if (connection) {
+      connection.onmessage = event => {
+        const data = event.data as BusPayload;
+        console.log('data', data);
+      };
+    }
+  }, [connection]);
 
   const start = () => setStarted(true);
 

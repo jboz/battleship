@@ -1,5 +1,10 @@
-import { Coordinates, Game, Player, PlayerId } from '../(core)/model';
+import { Subject } from 'rxjs';
+import { BusPayload, Coordinates, Game, Player, PlayerId } from '../(core)/model';
 import { existingGameCodes, insertGame, saveGame } from './repository';
+
+const internalBus = new Subject<BusPayload>();
+
+export const bus = () => internalBus.asObservable();
 
 export const createGame = (player: string) => {
   return existingGameCodes()

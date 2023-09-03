@@ -1,6 +1,6 @@
 import { Coordinates, Game, GameCreation, GameHit, GameJoining, PlayerId } from './model';
 
-const API_URL = '/api/';
+const API_URL = '/api/games';
 
 function fetchUrl<T>(serviceUrl: string, method: 'GET' | 'POST' | 'PUT' = 'GET', body?: any): Promise<T> {
   return fetch(`${API_URL}${serviceUrl}`, {
@@ -20,11 +20,22 @@ function fetchUrl<T>(serviceUrl: string, method: 'GET' | 'POST' | 'PUT' = 'GET',
 }
 
 const GameApi = {
-  create: (player: string) => fetchUrl<Game>('/games', 'POST', { player } as GameCreation),
+  create: (player: string) => fetchUrl<Game>('/', 'POST', { player } as GameCreation),
 
-  join: (gameId: string, player: string) => fetchUrl<Game>(`/games/${gameId}/join`, 'PUT', { player } as GameJoining),
+  join: (gameId: string, player: string) => fetchUrl<Game>(`/${gameId}/join`, 'PUT', { player } as GameJoining),
 
-  hit: (gameId: string, playerId: PlayerId, coords: Coordinates) => fetchUrl(`/games/${gameId}/hit`, 'PUT', { playerId, coords } as GameHit)
+  hit: (gameId: string, playerId: PlayerId, coords: Coordinates) => fetchUrl(`/${gameId}/hit`, 'PUT', { playerId, coords } as GameHit),
+
+  connect: (gameId: string, playerId: PlayerId) => {
+    const eventSource = new EventSource(`${API_URL}/${gameId}/players/${playerId}/bus`);
+
+    eventSource.onerror = event => {
+      console.log('Connection was closed due to an error:', event);
+      eventSource.close();
+    };
+
+    return eventSource;
+  }
 };
 
 export default GameApi;

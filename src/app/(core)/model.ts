@@ -56,3 +56,10 @@ export interface GameJoining {
 }
 
 export type PlayerId = 'player1' | 'player2';
+
+export interface BusPayload {
+  game: Game;
+  player: PlayerId;
+  finished: boolean;
+  message: string;
+}
