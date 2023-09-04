@@ -9,7 +9,7 @@ export const PUT = apiWrapper((request: Request, { params }: { params: { gameId:
     .json()
     .then(req => req as GameHit)
     .then(hitRequest => {
-      if (!['player1', 'player2'].includes(hitRequest.playerId)) {
+      if (!['player1', 'player2'].includes(hitRequest.target)) {
         throw new ValidationError(`Unknow player id! Should be 'player1' or 'player2'`);
       }
       if (!hitRequest.coords || isNaN(hitRequest.coords.x) || isNaN(hitRequest.coords.y)) {
@@ -19,7 +19,7 @@ export const PUT = apiWrapper((request: Request, { params }: { params: { gameId:
         if (!game) {
           throw new NotFoundError(`Game '${params.gameId}' not found!`);
         }
-        return { body: hit(getPlayer(game, hitRequest.playerId), hitRequest.coords) };
+        return { body: hit(game, hitRequest.target, getPlayer(game, hitRequest.target), hitRequest.coords) };
       });
     })
 );

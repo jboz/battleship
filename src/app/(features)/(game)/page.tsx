@@ -24,6 +24,7 @@ export default function Game() {
   const [playerNameJoin, setPlayerNameJoin] = useState('');
   const [gameId, setGameId] = useState('');
   const [playerId, setPlayerId] = useState<PlayerId>();
+  const [target, setTarget] = useState<PlayerId>();
 
   const [connection, setConnection] = useState<EventSource>();
 
@@ -48,15 +49,17 @@ export default function Game() {
     GameApi.create(playerName)
       .then(game => setGameId(game.id))
       .then(() => setStarted(true))
-      .then(() => setPlayerId('player1'));
+      .then(() => setPlayerId('player1'))
+      .then(() => setTarget('player2'));
 
   const joinGame = () =>
     GameApi.join(gameId, playerNameJoin)
       .then(game => setGameId(game.id))
       .then(() => setStarted(true))
-      .then(() => setPlayerId('player2'));
+      .then(() => setPlayerId('player2'))
+      .then(() => setTarget('player1'));
 
-  const hit = (coords: Coordinates) => GameApi.hit(gameId, playerId as PlayerId, coords);
+  const hit = (coords: Coordinates) => target && GameApi.hit(gameId, target, coords);
 
   return (
     <div className={styles.container}>

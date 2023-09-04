@@ -47,7 +47,7 @@ export interface GameCreation {
 }
 
 export interface GameHit {
-  playerId: PlayerId;
+  target: PlayerId;
   coords: Coordinates;
 }
 
@@ -58,8 +58,8 @@ export interface GameJoining {
 export type PlayerId = 'player1' | 'player2';
 
 export interface BusPayload {
-  game: Game;
+  gameId: string;
   player: PlayerId;
-  finished: boolean;
-  message: string;
+  finished?: boolean;
+  message: any;
 }

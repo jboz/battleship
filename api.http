@@ -22,15 +22,17 @@ Content-Type: application/json
     "player": "ju"
 }
 
-
 ### hit
 PUT {{API}}/games/game1/hit
 Content-Type: application/json
 
 {
-    "playerId": "player1",
+    "target": "player1",
     "coords": {
         "x": 3,
         "y": 1
     }
 }
+
+### bus
+curl -N http://localhost:3000/api/games/game1/players/player1/events

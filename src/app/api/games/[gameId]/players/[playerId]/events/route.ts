@@ -1,23 +1,19 @@
 import { PlayerId } from '@/app/(core)/model';
-import { bus } from '@/app/api/service';
-import { tap } from 'rxjs';
+import { BusPayload, channelId, events } from '@/app/api/service';
 
 export async function GET(_: Request, { params }: { params: { gameId: string; playerId: PlayerId } }) {
   let responseStream = new TransformStream();
   const writer = responseStream.writable.getWriter();
-  const encoder = new TextEncoder();
 
   try {
-    bus().pipe(
-      tap(payload => {
-        if (payload.game.id === params.gameId && payload.player === params.playerId) {
-          writer.write(encoder.encode(JSON.stringify(payload)));
-        }
-        if (payload.finished) {
-          writer.close();
-        }
-      })
-    );
+    events().on(channelId(params.gameId, params.playerId), (payload: BusPayload) => {
+      console.log(`payload received`, payload);
+      // if (event === channelId(params.gameId, params.playerId)) {
+      writer.write(`${JSON.stringify(payload)}\n`);
+      if (payload.finished) {
+        writer.close();
+      }
+    });
   } catch (error) {
     writer.close();
   }

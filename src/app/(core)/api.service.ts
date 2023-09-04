@@ -24,10 +24,10 @@ const GameApi = {
 
   join: (gameId: string, player: string) => fetchUrl<Game>(`/${gameId}/join`, 'PUT', { player } as GameJoining),
 
-  hit: (gameId: string, playerId: PlayerId, coords: Coordinates) => fetchUrl(`/${gameId}/hit`, 'PUT', { playerId, coords } as GameHit),
+  hit: (gameId: string, target: PlayerId, coords: Coordinates) => fetchUrl(`/${gameId}/hit`, 'PUT', { target, coords } as GameHit),
 
   connect: (gameId: string, playerId: PlayerId) => {
-    const eventSource = new EventSource(`${API_URL}/${gameId}/players/${playerId}/bus`);
+    const eventSource = new EventSource(`${API_URL}/${gameId}/players/${playerId}/events`);
 
     eventSource.onerror = event => {
       console.log('Connection was closed due to an error:', event);
