@@ -8,15 +8,14 @@ POST {{API}}/games
 Content-Type: application/json
 
 {
-    "name": "toto",
     "player": "maé"
 }
 
 ### game
-GET {{API}}/games/game01
+GET {{API}}/games/game1
 
 ### join
-PUT {{API}}/games/game01/join
+PUT {{API}}/games/game1/join
 Content-Type: application/json
 
 {
@@ -25,7 +24,7 @@ Content-Type: application/json
 
 
 ### hit
-PUT {{API}}/games/game01/hit
+PUT {{API}}/games/game1/hit
 Content-Type: application/json
 
 {

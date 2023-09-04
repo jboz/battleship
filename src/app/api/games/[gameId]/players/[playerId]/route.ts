@@ -1,16 +1,17 @@
 import { PlayerId } from '@/app/(core)/model';
+import { apiWrapper } from '@/app/api/(errors)/errors.handler';
+import { NotFoundError, ValidationError } from '@/app/api/(errors)/errors.model';
 import { findById } from '@/app/api/repository';
 import { getPlayer } from '@/app/api/service';
-import { NextResponse } from 'next/server';
 
-export async function GET(_: Request, { params }: { params: { gameId: string; playerId: PlayerId } }) {
+export const GET = apiWrapper((_: Request, { params }: { params: { gameId: string; playerId: PlayerId } }) => {
   if (['player1', 'player2'].includes(params.playerId)) {
-    return NextResponse.json({ error: `Unknow player id! Should be 'player1' or 'player2'` }, { status: 400 });
+    throw new ValidationError(`Unknow player id! Should be 'player1' or 'player2'`);
   }
   return findById(params.gameId).then(game => {
     if (!game) {
-      return NextResponse.json({ error: `Game ${params.gameId} not found!` }, { status: 404 });
+      throw new NotFoundError(`Game '${params.gameId}' not found!`);
     }
-    return NextResponse.json(getPlayer(game, params.playerId));
+    return { body: getPlayer(game, params.playerId) };
   });
-}
+});

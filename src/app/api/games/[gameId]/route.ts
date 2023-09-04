@@ -1,11 +1,12 @@
 import { findById } from '@/app/api/repository';
-import { NextResponse } from 'next/server';
+import { apiWrapper } from '../../(errors)/errors.handler';
+import { NotFoundError } from '../../(errors)/errors.model';
 
-export async function GET(_: Request, { params }: { params: { gameId: string } }) {
-  return findById(params.gameId).then(game => {
+export const GET = apiWrapper((_: Request, { params }: { params: { gameId: string } }) =>
+  findById(params.gameId).then(game => {
     if (!game) {
-      return NextResponse.json({ error: `Game '${params.gameId}' not found!` }, { status: 404 });
+      throw new NotFoundError(`Game '${params.gameId}' not found!`);
     }
-    return NextResponse.json(game);
-  });
-}
+    return { body: game };
+  })
+);

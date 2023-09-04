@@ -2,7 +2,7 @@ import { Game } from '../(core)/model';
 
 let db: Game[] = [];
 
-export const games = () => [...db];
+export const games = () => Promise.resolve([...db]);
 
 export const findById = (id: string) => Promise.resolve(db.find(g => g.id === id));
 
@@ -14,6 +14,6 @@ export const insertGame = (game: Game) => {
 };
 
 export const saveGame = (game: Game) => {
-  db = [...db.filter(g => g.id === game.id), game];
+  db = [...db.filter(g => g.id !== game.id), game];
   return Promise.resolve(game);
 };
