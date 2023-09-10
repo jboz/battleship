@@ -1,19 +1,31 @@
 import { useEffect, useState } from 'react';
-import { Coordinates } from '../model';
+import { Coordinates, Zone } from '../model';
 import Board from './board';
 import styles from './page.module.css';
 
 interface AttackBoardProps {
   onClick: (coord: Coordinates) => any;
+  hits: Zone[];
 }
 
-export default function AttackBoard({ onClick }: AttackBoardProps) {
+export default function AttackBoard({ onClick, hits }: AttackBoardProps) {
   const dimensions = Array.from({ length: 10 }, (_, i) => i + 1);
 
   const squareKey = (square: Square) => `${square.coords.x}:${square.coords.y}`;
   const newSquare = (x: number, y: number) => ({ coords: { x, y }, status: 'empty' } as Square);
 
   const [squares] = useState<Square[]>(dimensions.map(x => dimensions.map(y => newSquare(x, y))).reduce((a, b) => [...a, ...b], []));
+
+  const getCoordinate = (coordinates: Zone[], coord: Coordinates) => coordinates.find(h => h.x === coord.x && h.y === coord.y);
+
+  useEffect(() => {
+    squares.forEach(s => {
+      const hit = getCoordinate(hits, s.coords);
+      if (hit) {
+        s.status = hit.touched ? 'touched' : 'targeted';
+      }
+    });
+  }, [hits, squares]);
 
   return (
     <div className={styles.container}>

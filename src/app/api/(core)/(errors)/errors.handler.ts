@@ -19,14 +19,19 @@ export interface ApiResponse {
   body: any;
 }
 
-export const apiWrapper = (handler: (req: NextRequest, params: any) => Promise<ApiResponse>) => {
+export const apiWrapper = (handler: (req: NextRequest, params: any) => Promise<ApiResponse | void>) => {
   return async (req: NextRequest, res: NextResponse) => {
     try {
       console.log(`Request triggered at route ${req.method} ${req.url}`);
 
-      const { status, body } = await handler(req, res);
+      const response = await handler(req, res);
 
-      return NextResponse.json(body, { status });
+      console.log(`Response triggered at route ${req.method} ${req.url}: ${JSON.stringify(response?.body)}`);
+
+      if (response?.body || response?.status) {
+        return NextResponse.json(response.body, { status: response.status });
+      }
+      return new NextResponse();
     } catch (error) {
       return errorHandler(error, req);
     }

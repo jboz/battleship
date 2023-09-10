@@ -1,16 +1,24 @@
-import { useState } from 'react';
-import { BoardSquareProps, Ship, ShipProps, Square } from '../model';
+import { useEffect, useState } from 'react';
+import { Coordinates, Ship, ShipProps, Zone } from '../model';
 import Board from './board';
 import { useHotkeys } from './hotkeys';
 import styles from './page.module.css';
+
+export interface Square {
+  ship?: Ship;
+  hoverColor?: string;
+  touched: boolean;
+  coords: Coordinates;
+}
 
 interface HomeBoardProps {
   started: boolean;
   ships: Ship[];
   setShips: (ships: Ship[]) => any;
+  board: Zone[];
 }
 
-export default function HomeBoard({ started, ships, setShips }: HomeBoardProps) {
+export default function HomeBoard({ started, ships, setShips, board }: HomeBoardProps) {
   const dimensions = Array.from({ length: 10 }, (_, i) => i + 1);
 
   const [placementMode, setPlacementMode] = useState<'vertical' | 'horizontal'>('horizontal');
@@ -19,15 +27,25 @@ export default function HomeBoard({ started, ships, setShips }: HomeBoardProps) 
   );
   const [selectedShip, setSelectedShip] = useState<Ship | undefined>(undefined);
 
+  useEffect(() => {
+    board.forEach(zone => {
+      const square = squares.find(s => s.coords.x === zone.x && s.coords.y === zone.y);
+      if (square) {
+        square.touched = !!zone.touched;
+      }
+    });
+  }, [board, squares]);
+
   const squareOnClick = (clickedSquare: Square) => {
     if (started) {
-      clickedSquare.isHit = !clickedSquare.isHit;
+      clickedSquare.touched = !clickedSquare.touched;
       setSquares([...squares]);
       return;
     }
     if (clickedSquare.ship) {
       // remove ship from the board and select it
       clickedSquare.ship.placed = false;
+      clickedSquare.ship.coords = [];
       setShips([...ships]);
       setSelectedShip(clickedSquare.ship);
       squares.filter(square => square.ship?.id === clickedSquare.ship?.id).forEach(square => (square.ship = undefined));
@@ -39,6 +57,7 @@ export default function HomeBoard({ started, ships, setShips }: HomeBoardProps) 
         return;
       }
       selectedShip.placed = true;
+      selectedShip.coords = [...matchSquares.map(s => s.coords)];
       setShips([...ships]);
 
       matchSquares.forEach(square => (square.ship = selectedShip));
@@ -59,7 +78,7 @@ export default function HomeBoard({ started, ships, setShips }: HomeBoardProps) 
     }
   };
 
-  const onMouseOut = (square: Square) => {
+  const onMouseOut = () => {
     squares.forEach(square => (square.hoverColor = undefined));
     setSquares([...squares]);
   };
@@ -150,11 +169,18 @@ export default function HomeBoard({ started, ships, setShips }: HomeBoardProps) 
   );
 }
 
+interface BoardSquareProps {
+  square: Square;
+  onClick: (square: Square) => any;
+  onMouseEnter: (square: Square) => any;
+  onMouseOut: (square: Square) => any;
+}
+
 const BoardSquare = ({ square, onClick, onMouseEnter, onMouseOut }: BoardSquareProps) => {
   return (
     <div
       className={styles.cell}
-      style={{ backgroundColor: square.ship && square.isHit ? '#65000b' : square.ship?.color || square.hoverColor || '#e6e2f1' }}
+      style={{ backgroundColor: square.ship && square.touched ? '#65000b' : square.ship?.color || square.hoverColor || '#e6e2f1' }}
       onClick={() => onClick(square)}
       onMouseEnter={() => onMouseEnter(square)}
       onMouseOut={() => onMouseOut(square)}
@@ -176,5 +202,5 @@ const BoardShip = ({ ship, onSelection, selected }: ShipProps) => {
   );
 };
 
-const newSquare = (x: number, y: number) => ({ coords: { x, y }, hasShip: false, isHit: false } as Square);
+const newSquare = (x: number, y: number) => ({ coords: { x, y }, hasShip: false, touched: false } as Square);
 const squareKey = (square: Square) => `${square.coords.x}:${square.coords.y}`;

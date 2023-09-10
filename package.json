@@ -8,7 +8,9 @@
     "prelocal": "next build",
     "build": "next build",
     "start": "next dev",
-    "lint": "next lint"
+    "lint": "next lint",
+    "docker": "docker run -p 3000:3000 ifocusit/battleship",
+    "predocker": "docker build -t ifocusit/battleship:latest ."
   },
   "dependencies": {
     "@types/node": "20.5.0",

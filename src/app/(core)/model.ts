@@ -4,23 +4,9 @@ export interface ShipProps {
   selected: boolean;
 }
 
-export interface BoardSquareProps {
-  square: Square;
-  onClick: (square: Square) => any;
-  onMouseEnter: (square: Square) => any;
-  onMouseOut: (square: Square) => any;
-}
-
 export interface Coordinates {
   x: number;
   y: number;
-}
-
-export interface Square {
-  ship?: Ship;
-  hoverColor?: string;
-  isHit: boolean;
-  coords: Coordinates;
 }
 
 export interface Ship {
@@ -29,22 +15,33 @@ export interface Ship {
   size: number;
   color: string;
   placed?: boolean;
+  coords: Coordinates[];
+}
+
+export interface GameSumary {
+  code: string;
+  state: GameState;
+  player1: string;
+  player2: string;
 }
 
 export interface Game {
-  id: string;
+  code: string;
+  state: GameState;
   player1: Player;
   player2: Player;
 }
 
+export type GameState = 'creation' | 'progress' | 'player1Win' | 'player2Win';
+
 export interface Player {
+  id: PlayerId;
   name: string;
-  hits?: Coordinates[];
+  board: Coordinates[];
+  hits: Zone[];
 }
 
-export interface GameCreation {
-  player: string;
-}
+export type Zone = Coordinates & { touched?: boolean };
 
 export interface GameHit {
   target: PlayerId;
@@ -53,13 +50,24 @@ export interface GameHit {
 
 export interface GameJoining {
   player: string;
+  board: Coordinates[];
 }
 
 export type PlayerId = 'player1' | 'player2';
 
-export interface BusPayload {
-  gameId: string;
-  player: PlayerId;
-  finished?: boolean;
-  message: any;
+export interface OnConnectEvent {
+  board: Zone[];
 }
+
+export interface OnStateChangeEvent {
+  state: GameState;
+}
+
+export type Event = OnConnectEvent | OnStateChangeEvent;
+
+export interface EventPayload {
+  type: EventType;
+  content: Event;
+}
+
+export type EventType = 'onBoardChange' | 'onStateChange';
