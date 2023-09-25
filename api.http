@@ -1,4 +1,4 @@
-@API=http://localhost:3000/api
+@API=http://localhost:8080/api
 
 ### games
 GET {{API}}/games
@@ -8,33 +8,22 @@ POST {{API}}/games
 Content-Type: application/json
 
 {
-    "player": "maé",
-    "board": [
-        { "x": 2, "y": 5 },
-        { "x": 2, "y": 6 },
-        { "x": 2, "y": 7 },
-        { "x": 2, "y": 8 },
-        { "x": 2, "y": 9 },
-        { "x": 4, "y": 8 },
-        { "x": 5, "y": 8 },
-        { "x": 6, "y": 8 },
-        { "x": 7, "y": 8 },
-        { "x": 4, "y": 6 },
-        { "x": 5, "y": 6 },
-        { "x": 6, "y": 6 },
-        { "x": 4, "y": 4 },
-        { "x": 5, "y": 4 },
-        { "x": 6, "y": 4 },
-        { "x": 8, "y": 3 },
-        { "x": 8, "y": 4 },
-        { "x": 8, "y": 5 },
-        { "x": 9, "y": 8 },
-        { "x": 9, "y": 9 },
-        { "x": 9, "y": 10 },
-        { "x": 5, "y": 1 },
-        { "x": 5, "y": 2 }
-      ]
+    "player":"ma",
+    "board": {
+        "ships":[
+            {"name":"Carrier","size":5,"color":"#be456e","placed":true,"zones":[{"coords":{"x":2,"y":2}},{"coords":{"x":2,"y":3}},{"coords":{"x":2,"y":4}},{"coords":{"x":2,"y":5}},{"coords":{"x":2,"y":6}}]},
+            {"name":"Battleship","size":4,"color":"#0494ff","placed":true,"zones":[{"coords":{"x":4,"y":9}},{"coords":{"x":5,"y":9}},{"coords":{"x":6,"y":9}},{"coords":{"x":7,"y":9}}]},
+            {"name":"Cruiser1","size":3,"color":"#04ff8a","placed":true,"zones":[{"coords":{"x":4,"y":7}},{"coords":{"x":5,"y":7}},{"coords":{"x":6,"y":7}}]},
+            {"name":"Cruiser2","size":3,"color":"#04ff8a","placed":true,"zones":[{"coords":{"x":4,"y":5}},{"coords":{"x":5,"y":5}},{"coords":{"x":6,"y":5}}]},
+            {"name":"Submarine1","size":3,"color":"#04ffde","placed":true,"zones":[{"coords":{"x":4,"y":3}},{"coords":{"x":5,"y":3}},{"coords":{"x":6,"y":3}}]},
+            {"name":"Submarine2","size":3,"color":"#04ffde","placed":true,"zones":[{"coords":{"x":8,"y":1}},{"coords":{"x":9,"y":1}},{"coords":{"x":10,"y":1}}]},
+            {"name":"Destroyer","size":2,"color":"#af54a0","placed":true,"zones":[{"coords":{"x":9,"y":6}},{"coords":{"x":9,"y":7}}]}
+        ]
+    }
 }
+
+### game
+GET {{API}}/games/game1
 
 ### delete
 DELETE {{API}}/games/game1
@@ -44,32 +33,18 @@ PUT {{API}}/games/game1/join
 Content-Type: application/json
 
 {
-    "player": "ju",
-    "board": [
-        { "x": 2, "y": 5 },
-        { "x": 2, "y": 6 },
-        { "x": 2, "y": 7 },
-        { "x": 2, "y": 8 },
-        { "x": 2, "y": 9 },
-        { "x": 4, "y": 8 },
-        { "x": 5, "y": 8 },
-        { "x": 6, "y": 8 },
-        { "x": 7, "y": 8 },
-        { "x": 4, "y": 6 },
-        { "x": 5, "y": 6 },
-        { "x": 6, "y": 6 },
-        { "x": 4, "y": 4 },
-        { "x": 5, "y": 4 },
-        { "x": 6, "y": 4 },
-        { "x": 8, "y": 3 },
-        { "x": 8, "y": 4 },
-        { "x": 8, "y": 5 },
-        { "x": 9, "y": 8 },
-        { "x": 9, "y": 9 },
-        { "x": 9, "y": 10 },
-        { "x": 5, "y": 1 },
-        { "x": 5, "y": 2 }
-      ]
+    "player":"ju",
+    "board":{
+        "ships":[
+            {"name":"Carrier","size":5,"color":"#be456e","placed":true,"zones":[{"coords":{"x":6,"y":9}},{"coords":{"x":7,"y":9}},{"coords":{"x":8,"y":9}},{"coords":{"x":9,"y":9}},{"coords":{"x":10,"y":9}}]},
+            {"name":"Battleship","size":4,"color":"#0494ff","placed":true,"zones":[{"coords":{"x":3,"y":6}},{"coords":{"x":3,"y":7}},{"coords":{"x":3,"y":8}},{"coords":{"x":3,"y":9}}]},
+            {"name":"Cruiser1","size":3,"color":"#04ff8a","placed":true,"zones":[{"coords":{"x":5,"y":7}},{"coords":{"x":6,"y":7}},{"coords":{"x":7,"y":7}}]},
+            {"name":"Cruiser2","size":3,"color":"#04ff8a","placed":true,"zones":[{"coords":{"x":9,"y":5}},{"coords":{"x":9,"y":6}},{"coords":{"x":9,"y":7}}]},
+            {"name":"Submarine1","size":3,"color":"#04ffde","placed":true,"zones":[{"coords":{"x":7,"y":3}},{"coords":{"x":8,"y":3}},{"coords":{"x":9,"y":3}}]},
+            {"name":"Submarine2","size":3,"color":"#04ffde","placed":true,"zones":[{"coords":{"x":5,"y":3}},{"coords":{"x":5,"y":4}},{"coords":{"x":5,"y":5}}]},
+            {"name":"Destroyer","size":2,"color":"#af54a0","placed":true,"zones":[{"coords":{"x":10,"y":1}},{"coords":{"x":10,"y":2}}]}
+        ]
+    }
 }
 
 ### hit
@@ -77,17 +52,17 @@ PUT {{API}}/games/game1/hit
 Content-Type: application/json
 
 {
-    "target": "player2",
+    "target": "player1",
     "coords": {
         "x": 2,
-        "y": 5
+        "y": 2
     }
 }
 
 ### bus
-curl -N http://localhost:3000/api/games/game1/players/player1/events
+#curl -N http://localhost:8080/api/games/game1/players/player1/events
+GET {{API}}/games/game1/players/player1/events
+Accept: text/event-stream
 
-#### test
-POST {{API}}/test 
-
-{"message": "Hello world!"}
+#### player by name
+GET {{API}}/games/game1/players?name=ma
