@@ -3,7 +3,7 @@
 import GameApi from '@/app/(core)/api.service';
 import AttackBoard from '@/app/(core)/components/attackboard';
 import HomeBoard from '@/app/(core)/components/homeboard';
-import { Board, Coordinates, GameState, HitEvent, Hits, PlayerEvent, PlayerId } from '@/app/(core)/model';
+import { Board, Coordinates, FinishEvent, GameState, HitEvent, Hits, PlayerEvent, PlayerId } from '@/app/(core)/model';
 import { useEffect, useState } from 'react';
 import styles from './page.module.scss';
 
@@ -47,8 +47,6 @@ export default function Game() {
 
   useEffect(() => {
     if (connection) {
-      connection.onmessage = console.log;
-
       connection.addEventListener('PlayerEvent', event => {
         const content = JSON.parse(event.data) as PlayerEvent;
         setBoard(content.player.board);
@@ -61,12 +59,13 @@ export default function Game() {
         }
       });
       connection.addEventListener('FinishEvent', event => {
-        console.log(`FinishEvent`, event);
+        const content = JSON.parse(event.data) as FinishEvent;
       });
       connection.onerror = () => setError('Connection error');
 
       return () => connection.close();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connection]);
 
   const start = () => setGameState('progress');
