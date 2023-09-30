@@ -1,0 +1,55 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ci.yml"
+      - "src/**"
+      - "pom.xml"
+  pull_request:
+    branches: [main]
+
+permissions:
+  packages: write
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-jvm:
+    runs-on: ubuntu-latest
+    env:
+      MVN: mvn --show-version --batch-mode
+    steps:
+      - name: jdk
+        uses: actions/setup-java@v3
+        with:
+          java-version: "20"
+
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: cache ~/.m2
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: mvn clean compile
+        run: $MVN clean compile
+
+      - name: mvn test
+        run: $MVN test
+
+      - name: mvn package -DskipTests -Dquarkus.container-image.push=true latest
+        if: github.ref == 'refs/heads/main'
+        run: >-
+          $MVN package -DskipTests
+          -Dquarkus.container-image.push=true
+          -Dquarkus.container-image.username=${{ secrets.DOCKER_USERNAME }}
+          -Dquarkus.container-image.password=${{ secrets.DOCKER_PASSWORD }}
+          -Dquarkus.container-image.image=submarine.banan4.com/ifocusit/${{ github.repository }}:latest
+          '-Dquarkus.container-image.labels."org.opencontainers.image.revision"='$GITHUB_SHA
