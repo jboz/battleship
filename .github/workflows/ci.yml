@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-jvm:
+  build-publish:
     runs-on: ubuntu-latest
     env:
       MVN: mvn --show-version --batch-mode
@@ -26,7 +26,8 @@ jobs:
       - name: jdk
         uses: actions/setup-java@v3
         with:
-          java-version: "20"
+          java-version: 20
+          distriubtion: openjdk
 
       - name: checkout
         uses: actions/checkout@v3
