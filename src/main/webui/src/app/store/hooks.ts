@@ -1,5 +1,5 @@
 import { AsyncThunk, AsyncThunkPayloadCreator, CombinedState, createAsyncThunk } from '@reduxjs/toolkit';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { TypedUseSelectorHook, useDispatch as useBaseDispatch, useSelector as useBaseSelector } from 'react-redux';
 import type { AppDispatch, RootState } from './store';
 
 interface ThunkAPI {
@@ -19,5 +19,5 @@ export const asyncThunk = <Returned, Input = void>(
     }
   });
 };
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useDispatch = () => useBaseDispatch<AppDispatch>();
+export const useSelector: TypedUseSelectorHook<RootState> = useBaseSelector;
