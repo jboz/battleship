@@ -1,22 +1,27 @@
 package ch.ifocusit.game.battleship.domain.model;
 
+import ch.ifocusit.game.battleship.domain.model.boards.attack.AttackBoard;
+import ch.ifocusit.game.battleship.domain.model.boards.attack.AttackTile;
+import ch.ifocusit.game.battleship.domain.model.boards.home.HomeBoard;
+import ch.ifocusit.game.battleship.domain.model.tile.Coordinate;
 import jakarta.annotation.Nonnull;
 
-public record Player(@Nonnull PlayerId id, @Nonnull String name, @Nonnull Board board, @Nonnull Hits hits) {
+public record Player(@Nonnull PlayerId id, @Nonnull String name, @Nonnull HomeBoard homeBoard,
+        @Nonnull AttackBoard attackBoard) {
 
-    public void hit(Coordinate coords, Board otherBoard) {
-        if (!hits.contains(coords)) {
-            hits.add(new Zone(coords));
+    public void hit(Coordinate coords, HomeBoard otherBoard) {
+        if (!attackBoard.contains(coords)) {
+            attackBoard.add(new AttackTile(coords));
         }
-        hits.updates(hit -> hit.markTouched(otherBoard.contains(hit.getCoords())));
+        attackBoard.updates(hit -> hit.touched(otherBoard.contains(hit.getCoords())));
     }
 
-    public void updateBoard(Hits hits) {
-        board.impacts(hits);
+    public void updateBoard(AttackBoard hits) {
+        homeBoard.impacts(hits);
     }
 
     public boolean allIsTouched() {
-        return board.allIsTouched();
+        return homeBoard.allIsTouched();
     }
 
 }

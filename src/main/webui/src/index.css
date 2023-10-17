@@ -1,0 +1,35 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: Inter;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  color: #fff;
+  background: #17141f;
+  padding: 2em;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+main {
+  padding-top: 4em;
+  width: 100%;
+  height: 100%;
+  padding: 2em;
+}
+
+button {
+  padding: 0.5em;
+}

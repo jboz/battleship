@@ -1,0 +1,26 @@
+.ships {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  min-width: 170px;
+}
+
+.ship {
+  display: flex;
+  width: fit-content;
+}
+
+.toolbar {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1em;
+}
+
+.toolbar > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}

@@ -9,9 +9,9 @@ import org.jboss.resteasy.reactive.RestStreamElementType;
 import ch.ifocusit.game.battleship.domain.model.GameHit;
 import ch.ifocusit.game.battleship.domain.model.GameJoining;
 import ch.ifocusit.game.battleship.domain.model.GameSummary;
-import ch.ifocusit.game.battleship.domain.model.Hits;
 import ch.ifocusit.game.battleship.domain.model.Player;
 import ch.ifocusit.game.battleship.domain.model.PlayerId;
+import ch.ifocusit.game.battleship.domain.model.boards.attack.AttackBoard;
 import ch.ifocusit.game.battleship.domain.service.EventsService;
 import ch.ifocusit.game.battleship.domain.service.GamesService;
 import jakarta.inject.Inject;
@@ -70,7 +70,7 @@ public class GamesResource {
 
     @PUT()
     @Path("/{code}/hit")
-    public Hits hit(@RestPath("code") String code, @Valid @NotNull GameHit request) {
+    public AttackBoard hit(@RestPath("code") String code, @Valid @NotNull GameHit request) {
         return service.hit(code, request);
     }
 
