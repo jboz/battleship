@@ -9,11 +9,11 @@ import jakarta.annotation.Nonnull;
 public record Player(@Nonnull PlayerId id, @Nonnull String name, @Nonnull HomeBoard homeBoard,
         @Nonnull AttackBoard attackBoard) {
 
-    public void hit(Coordinate coords, HomeBoard otherBoard) {
+    public void hit(Coordinate coords, HomeBoard targetBoard) {
         if (!attackBoard.contains(coords)) {
             attackBoard.add(new AttackTile(coords));
         }
-        attackBoard.updates(hit -> hit.touched(otherBoard.contains(hit.getCoords())));
+        attackBoard.updates(hit -> hit.setTouched(targetBoard.contains(hit.getCoord())));
     }
 
     public void updateBoard(AttackBoard hits) {

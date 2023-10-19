@@ -14,6 +14,7 @@ import ch.ifocusit.game.battleship.domain.model.tile.Coordinate;
 
 public class HomeBoard extends Board<HomeTile> {
 
+    @JsonIgnore
     public List<Ship> getShips() {
         return tiles.stream()
                 .collect(groupingBy(HomeTile::getShipId))
@@ -27,7 +28,7 @@ public class HomeBoard extends Board<HomeTile> {
     }
 
     private Optional<HomeTile> getTile(Coordinate coords) {
-        return tiles.stream().filter(zone -> zone.getCoords().equals(coords)).findFirst();
+        return tiles.stream().filter(zone -> zone.getCoord().equals(coords)).findFirst();
     }
 
     public boolean contains(Coordinate coords) {
@@ -36,7 +37,7 @@ public class HomeBoard extends Board<HomeTile> {
 
     public void impacts(AttackBoard hits) {
         hits.forEach(hit -> {
-            getTile(hit.getCoords()).ifPresent(tile -> tile.hit());
+            getTile(hit.getCoord()).ifPresent(tile -> tile.hit());
         });
     }
 

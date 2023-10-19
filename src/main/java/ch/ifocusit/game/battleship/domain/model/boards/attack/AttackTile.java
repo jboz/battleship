@@ -2,6 +2,7 @@ package ch.ifocusit.game.battleship.domain.model.boards.attack;
 
 import ch.ifocusit.game.battleship.domain.model.tile.Coordinate;
 import ch.ifocusit.game.battleship.domain.model.tile.Tile;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,14 +13,15 @@ import lombok.experimental.FieldDefaults;
 public class AttackTile extends Tile {
     @Getter
     @Setter
-    @Accessors(chain = true, fluent = true)
+    @Accessors(chain = true)
     boolean touched;
 
-    public AttackTile(Coordinate coords) {
-        super(coords);
+    public AttackTile(@NotNull Coordinate coord) {
+        super(coord);
+        hitted = true;
     }
 
     public boolean same(Coordinate other) {
-        return coords.equals(other);
+        return coord.equals(other);
     }
 }

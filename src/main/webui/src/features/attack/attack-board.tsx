@@ -1,13 +1,16 @@
 import { BoardComponent } from '../../app/components/board';
 import { AttackBoardTile } from '../../app/components/utils';
-import { useSelector } from '../../app/store/hooks';
+import { useDispatch, useSelector } from '../../app/store/hooks';
 import './attack-board.scss';
-import { selectAttackTiles } from './attack.slice';
+import { hit, selectAttackTiles } from './attack.slice';
 
 export const AttackBoard = () => {
+  const dispatch = useDispatch();
   const tiles = useSelector(selectAttackTiles);
 
-  const onTileClick = (cliquedTile: AttackBoardTile) => {};
+  const onTileClick = (tile: AttackBoardTile) => {
+    dispatch(hit(tile.coord));
+  };
 
   return (
     <div className="container">

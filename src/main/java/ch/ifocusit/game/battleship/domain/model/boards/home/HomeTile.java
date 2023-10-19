@@ -1,8 +1,11 @@
 package ch.ifocusit.game.battleship.domain.model.boards.home;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import ch.ifocusit.game.battleship.domain.model.tile.Coordinate;
 import ch.ifocusit.game.battleship.domain.model.tile.Tile;
 import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
@@ -12,10 +15,12 @@ public class HomeTile extends Tile {
 
     @Getter
     @Nullable
-    String shipId;
+    final String shipId;
 
-    public HomeTile(Coordinate coords) {
-        super(coords);
+    @JsonCreator
+    public HomeTile(@NotNull Coordinate coord, String shipId) {
+        super(coord);
+        this.shipId = shipId;
     }
 
     public boolean hasShip() {
@@ -24,10 +29,6 @@ public class HomeTile extends Tile {
 
     public boolean isTouched() {
         return hitted && hasShip();
-    }
-
-    public boolean same(Coordinate other) {
-        return coords.equals(other);
     }
 
     public HomeTile hit() {

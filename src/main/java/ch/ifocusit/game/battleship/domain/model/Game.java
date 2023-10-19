@@ -26,6 +26,12 @@ public class Game {
     }
 
     public Game join(GameJoining joiningRequest) {
+        if (player1 != null && player1.name().equals(joiningRequest.player())) {
+            return this;
+        }
+        if (player2 != null && player2.name().equals(joiningRequest.player())) {
+            return this;
+        }
         player2 = new Player(PlayerId.player2, joiningRequest.player(), joiningRequest.board(), new AttackBoard());
         status = Status.IN_PROGRESS;
         return this;

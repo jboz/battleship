@@ -24,11 +24,9 @@ const GameApi = {
 
   join: (gameCode: string, request: GameJoining) => fetchUrl<Game>(`/${gameCode}/join`, 'PUT', request),
 
-  // getPlayer: (gameCode: string, player: string) => fetchUrl<Player>(`/${gameCode}/players?name=${player}`),
+  hit: (gameCode: string, target: PlayerId, coords: Coordinate) => fetchUrl<Tile[]>(`/${gameCode}/hit`, 'PUT', { target, coords } as Hit),
 
-  hit: (gameCode: string, target: PlayerId, coords: Coordinate) => fetchUrl<Tile[]>(`/${gameCode}/hit`, 'PUT', { target, coords } as Hit)
-
-  // connect: (gameCode: string, playerId: PlayerId) => new EventSource(`${API_URL}/${gameCode}/players/${playerId}/events`)
+  connect: (gameCode: string, playerId: PlayerId) => new EventSource(`${API_URL}/${gameCode}/players/${playerId}/events`)
 };
 
 export default GameApi;

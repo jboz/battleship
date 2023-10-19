@@ -19,6 +19,9 @@ export type AttackTile = Tile & {
 
 export interface Game {
   code: string;
+  status: 'CREATION' | 'IN_PROGRESS' | 'FINISHED';
+  player1?: string;
+  player2?: string;
 }
 
 export enum PlayerId {
@@ -34,10 +37,27 @@ export interface Player {
 export interface GameJoining {
   gameCode?: string;
   player: string;
-  tiles: Tile[];
+  board: {
+    tiles: Tile[];
+  };
 }
 
 export interface Hit {
   target: PlayerId;
   coords: Coordinate;
+}
+
+export interface PlayerEvent {
+  player: {
+    homeBoard: {
+      tiles: HomeTile[];
+    };
+    attackBoard: {
+      tiles: AttackTile[];
+    };
+  };
+}
+
+export interface FinishedEvent {
+  winner: PlayerId;
 }

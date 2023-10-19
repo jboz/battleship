@@ -1,6 +1,6 @@
 import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
 import { attackReducer } from '../../features/attack/attack.slice';
-import { gameReducer } from '../../features/game/game.slice';
+import { gameReducer } from '../../features/game.slice';
 import { homeReducer } from '../../features/home/home.slice';
 
 export const store = configureStore({

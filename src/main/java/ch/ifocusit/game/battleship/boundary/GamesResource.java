@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
-import org.jboss.resteasy.reactive.RestStreamElementType;
 
 import ch.ifocusit.game.battleship.domain.model.GameHit;
 import ch.ifocusit.game.battleship.domain.model.GameJoining;
@@ -83,8 +82,8 @@ public class GamesResource {
     @GET
     @Path("/{code}/players/{player}/events")
     @Produces(MediaType.SERVER_SENT_EVENTS)
-    @RestStreamElementType(MediaType.APPLICATION_JSON)
     public void events(@RestPath("code") String code, @RestPath("player") PlayerId player, @Context SseEventSink sink) {
         eventsService.listen(code, player, sink);
+        service.sendState(code);
     }
 }

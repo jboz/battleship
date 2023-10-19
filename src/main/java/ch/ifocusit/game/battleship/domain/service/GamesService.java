@@ -10,8 +10,8 @@ import ch.ifocusit.game.battleship.domain.model.GameHit;
 import ch.ifocusit.game.battleship.domain.model.GameJoining;
 import ch.ifocusit.game.battleship.domain.model.GameSummary;
 import ch.ifocusit.game.battleship.domain.model.Player;
+import ch.ifocusit.game.battleship.domain.model.boards.attack.AttackBoard;
 import ch.ifocusit.game.battleship.domain.model.events.FinishEvent;
-import ch.ifocusit.game.battleship.domain.model.events.HitEvent;
 import ch.ifocusit.game.battleship.domain.model.events.PlayerEvent;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -62,13 +62,14 @@ public class GamesService {
         games.removeIf(game -> game.code().equals(code));
     }
 
-    public ch.ifocusit.game.battleship.domain.model.boards.attack.AttackBoard hit(String code, GameHit request) {
+    public AttackBoard hit(String code, GameHit request) {
         final var game = findByCode(code);
         final var source = game.hit(request.target(), request.coords());
 
         eventsService.publish(new PlayerEvent(game.code(), game.player1()));
         eventsService.publish(new PlayerEvent(game.code(), game.player2()));
-        eventsService.publish(new HitEvent(game.code(), source.id(), source.attackBoard()));
+        // eventsService.publish(new HitEvent(game.code(), source.id(),
+        // source.attackBoard()));
 
         if (game.finished()) {
             eventsService.publish(new FinishEvent(game.code(), game.winner()));
@@ -84,5 +85,15 @@ public class GamesService {
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Player '" + name + "' not found!"));
 
+    }
+
+    public void sendState(String code) {
+        final var game = findByCode(code);
+        if (game.player1() != null) {
+            eventsService.publish(new PlayerEvent(game.code(), game.player1()));
+        }
+        if (game.player2() != null) {
+            eventsService.publish(new PlayerEvent(game.code(), game.player2()));
+        }
     }
 }

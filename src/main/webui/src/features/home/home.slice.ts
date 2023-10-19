@@ -1,6 +1,6 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HomeBoardTile, initTiles } from '../../app/components/utils';
-import { Coordinate, PlayerId } from '../../app/model';
+import { Coordinate, HomeTile, PlayerId } from '../../app/model';
 import { RootState } from '../../app/store/store';
 import { getMatchBoardTiles, getNextShip } from './home-stote.utils';
 
@@ -76,8 +76,7 @@ export const homeSlice = createSlice({
       if (!selectedShip) {
         return;
       }
-      const cliquedTile = payload;
-      const matchTiles = getMatchBoardTiles(selectedShip, cliquedTile, state.tiles, state.placementMode);
+      const matchTiles = getMatchBoardTiles(selectedShip, payload, state.tiles, state.placementMode);
       if (matchTiles.length < selectedShip.size) {
         return;
       }
@@ -102,15 +101,40 @@ export const homeSlice = createSlice({
     },
     togglePlacementMode: state => {
       state.placementMode = state.placementMode === 'horizontal' ? 'vertical' : 'horizontal';
+    },
+    setPlayer: (state, { payload }: PayloadAction<PlayerId>) => {
+      state.source = payload;
+    },
+    setTiles: (state, { payload }: PayloadAction<HomeTile[]>) => {
+      if (payload.length === initialState.tiles.length) {
+        state.tiles = payload.map(tile => {
+          const ship = state.ships.find(s => s.id === tile.shipId);
+          if (ship) {
+            ship.placed = true;
+          }
+          return { ...tile, color: tile.hitted ? (ship ? darker(ship?.color) : '#828282') : ship?.color || '#e6e2f1' } as HomeBoardTile;
+        });
+      }
     }
   }
 });
 
-export const { reducer: homeReducer } = homeSlice;
-export const { setSelectedShip, markHover, unmarkHover, tryToPlaceShip, reset, togglePlacementMode } = homeSlice.actions;
+const darker = (color: string) => color + '55';
 
-export const selectSource = (state: RootState) => state.home.source;
+export const { reducer: homeReducer } = homeSlice;
+export const {
+  setSelectedShip,
+  markHover,
+  unmarkHover,
+  tryToPlaceShip,
+  reset,
+  togglePlacementMode,
+  setPlayer: setHomePlayer,
+  setTiles: setHomeTiles
+} = homeSlice.actions;
+
 export const selectShips = (state: RootState) => state.home.ships;
 export const selectSelectedShip = (state: RootState) => state.home.ships.find(s => s.id === state.home.selectedShipId);
 export const selectHomeTiles = (state: RootState) => state.home.tiles;
 export const selectPlacementMode = (state: RootState) => state.home.placementMode;
+export const selectHomePlayer = (state: RootState) => state.home.source;

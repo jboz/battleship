@@ -9,9 +9,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
+@Getter
 @FieldDefaults(level = AccessLevel.PROTECTED)
 public abstract class Board<T extends Tile> {
-    @Getter
     List<T> tiles = new ArrayList<>();
 
     public void forEach(Consumer<T> consumer) {
