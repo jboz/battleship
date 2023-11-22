@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import GameApi from '../app/api.service';
+import { addError } from '../app/errors/errors.slice';
 import { FinishedEvent, Game, GameJoining, PlayerEvent, PlayerId } from '../app/model';
 import { createAsyncThunk } from '../app/store/hooks';
 import { RootState } from '../app/store/store';
@@ -13,7 +14,7 @@ interface GameState {
 const initialState: GameState = {};
 
 export const create = createAsyncThunk('game/create', (request: GameJoining, { dispatch }) => {
-  GameApi.create(request).then(game => {
+  return GameApi.create(request).then(game => {
     dispatch(setGame(game));
     dispatch(setHomePlayer(game.player1 === request.player ? PlayerId.player1 : PlayerId.player2));
     dispatch(setTargetPlayer(game.player1 === request.player ? PlayerId.player1 : PlayerId.player2));
@@ -22,14 +23,13 @@ export const create = createAsyncThunk('game/create', (request: GameJoining, { d
 });
 
 export const join = createAsyncThunk('game/join', (request: GameJoining, { dispatch }) => {
-  request.gameCode &&
-    GameApi.join(request.gameCode, request).then(game => {
-      dispatch(setGame(game));
-      dispatch(setHomePlayer(game.player1 === request.player ? PlayerId.player1 : PlayerId.player2));
-      dispatch(setTargetPlayer(game.player1 === request.player ? PlayerId.player2 : PlayerId.player1));
-      dispatch(clearShipSelection());
-      dispatch(listen());
-    });
+  return GameApi.join(request.gameCode || '', request).then(game => {
+    dispatch(setGame(game));
+    dispatch(setHomePlayer(game.player1 === request.player ? PlayerId.player1 : PlayerId.player2));
+    dispatch(setTargetPlayer(game.player1 === request.player ? PlayerId.player2 : PlayerId.player1));
+    dispatch(clearShipSelection());
+    dispatch(listen());
+  });
 });
 
 const listen = createAsyncThunk('game/listen', (_, { dispatch, getState }) => {
@@ -46,8 +46,9 @@ const listen = createAsyncThunk('game/listen', (_, { dispatch, getState }) => {
       const content = JSON.parse(event.data) as FinishedEvent;
       console.log(`finished`, content);
     });
-    connection.onerror = console.error;
+    connection.onerror = () => dispatch(addError('Error during event streaming'));
   }
+  return Promise.resolve();
 });
 
 export const gameSlice = createSlice({
@@ -61,8 +62,6 @@ export const gameSlice = createSlice({
 });
 
 const { setGame } = gameSlice.actions;
-
-export const { reducer: gameReducer } = gameSlice;
 
 export const selectGameConnected = (state: RootState) => !!state.game.game;
 export const selectGameCode = (state: RootState) => state.game.game?.code;

@@ -1,13 +1,15 @@
 import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
-import { attackReducer } from '../../features/attack/attack.slice';
-import { gameReducer } from '../../features/game.slice';
-import { homeReducer } from '../../features/home/home.slice';
+import { attackSlice } from '../../features/attack/attack.slice';
+import { gameSlice } from '../../features/game.slice';
+import { homeSlice } from '../../features/home/home.slice';
+import { errorsSlice } from '../errors/errors.slice';
 
 export const store = configureStore({
   reducer: {
-    home: homeReducer,
-    attack: attackReducer,
-    game: gameReducer
+    home: homeSlice.reducer,
+    attack: attackSlice.reducer,
+    game: gameSlice.reducer,
+    errors: errorsSlice.reducer
   }
 });
 

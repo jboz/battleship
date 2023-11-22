@@ -1,33 +1,20 @@
-.ships {
+.attack-board {
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
-  min-width: 170px;
-}
-
-.ship {
-  display: flex;
-  width: fit-content;
-}
-
-.title {
-  display: flex;
-  gap: 0.5em;
   justify-content: center;
-  align-items: center;
-}
-
-.toolbar {
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
-  align-items: center;
   gap: 1em;
-}
 
-.toolbar > div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1em;
+  & > title {
+    display: flex;
+    gap: 0.5em;
+    justify-content: center;
+    align-items: center;
+  }
+
+  & > main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
 }

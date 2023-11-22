@@ -22,7 +22,7 @@ export const getMatchBoardTiles = (ship: Ship, startBoardTile: HomeBoardTile, ti
       );
     });
 
-export const getNextShip = (selectedShip: Ship, ships: Ship[]) => {
+export const getNextShip = (selectedShip: Ship | undefined, ships: Ship[]) => {
   const actualIndex = (selectedShip && ships.indexOf(selectedShip)) || -1;
   for (let index = Math.max(actualIndex, 0); index < ships.length; index++) {
     const ship = ships[index];

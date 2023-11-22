@@ -1,5 +1,6 @@
 package ch.ifocusit.game.battleship.domain.model;
 
+import ch.ifocusit.game.battleship.boundary.errors.UnprocessableEntityException;
 import ch.ifocusit.game.battleship.domain.model.boards.attack.AttackBoard;
 import ch.ifocusit.game.battleship.domain.model.tile.Coordinate;
 import lombok.AccessLevel;
@@ -48,6 +49,10 @@ public class Game {
     public Player shot(PlayerId targetId, Coordinate shot) {
         final var target = PlayerId.player2.equals(targetId) ? player2 : player1;
         final var source = PlayerId.player1.equals(targetId) ? player2 : player1;
+
+        if (source == null || target == null) {
+            throw new UnprocessableEntityException("Missing target player! Someone have to join the game.");
+        }
 
         source.shot(shot, target.homeBoard());
         target.updateBoard(source.attackBoard());

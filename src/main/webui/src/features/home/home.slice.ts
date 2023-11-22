@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { HomeBoardTile, initTiles } from '../../app/components/utils';
 import { Coordinate, HomeTile, PlayerId } from '../../app/model';
 import { RootState } from '../../app/store/store';
-import { getMatchBoardTiles, getNextShip } from './home-stote.utils';
+import { getMatchBoardTiles, getNextShip } from './home-board.utils';
 
 type PlacementMode = 'vertical' | 'horizontal';
 
@@ -22,18 +22,21 @@ interface HomeState {
   placementMode: PlacementMode;
 }
 
+const DEFAULT_SHIPS = [
+  { id: 'Carrier', size: 5, color: '#be456e', coords: [] },
+  { id: 'Battleship', size: 4, color: '#0494ff', coords: [] },
+  { id: 'Cruiser1', size: 3, color: '#04ff8a', coords: [] },
+  { id: 'Cruiser2', size: 3, color: '#04ff8a', coords: [] },
+  { id: 'Submarine1', size: 3, color: '#04ffde', coords: [] },
+  { id: 'Submarine2', size: 3, color: '#04ffde', coords: [] },
+  { id: 'Destroyer', size: 2, color: '#af54a0', coords: [] }
+];
+
 const initialState: HomeState = {
   tiles: initTiles<HomeBoardTile>(),
-  ships: [
-    { id: 'Carrier', size: 5, color: '#be456e', coords: [] },
-    { id: 'Battleship', size: 4, color: '#0494ff', coords: [] },
-    { id: 'Cruiser1', size: 3, color: '#04ff8a', coords: [] },
-    { id: 'Cruiser2', size: 3, color: '#04ff8a', coords: [] },
-    { id: 'Submarine1', size: 3, color: '#04ffde', coords: [] },
-    { id: 'Submarine2', size: 3, color: '#04ffde', coords: [] },
-    { id: 'Destroyer', size: 2, color: '#af54a0', coords: [] }
-  ],
-  placementMode: 'horizontal'
+  ships: DEFAULT_SHIPS,
+  placementMode: 'horizontal',
+  selectedShipId: getNextShip(undefined, DEFAULT_SHIPS)?.id
 };
 
 export const homeSlice = createSlice({
@@ -91,12 +94,9 @@ export const homeSlice = createSlice({
       state.selectedShipId = getNextShip(selectedShip, state.ships)?.id;
     },
     reset: state => {
-      state.ships.map(s => ({ ...s, placed: false, zones: [] }));
-      state.tiles.forEach(tile => {
-        tile.shipId = undefined;
-        tile.color = undefined;
-        tile.hoverColor = undefined;
-      });
+      state.ships = state.ships.map(ship => ({ ...ship, placed: false, zones: [] }));
+      state.tiles = state.tiles.map(tile => ({ ...tile, shipId: undefined, color: undefined, hoverColor: undefined }));
+      state.selectedShipId = getNextShip(undefined, state.ships)?.id;
     },
     togglePlacementMode: state => {
       state.placementMode = state.placementMode === 'horizontal' ? 'vertical' : 'horizontal';
@@ -124,7 +124,6 @@ export const homeSlice = createSlice({
 
 const darker = (color: string) => color + '55';
 
-export const { reducer: homeReducer } = homeSlice;
 export const {
   setSelectedShip,
   markHover,
@@ -138,7 +137,9 @@ export const {
 } = homeSlice.actions;
 
 export const selectShips = (state: RootState) => state.home.ships;
+export const selectShipsToPlace = (state: RootState) => state.home.ships.filter(ship => !ship.placed);
 export const selectSelectedShip = (state: RootState) => state.home.ships.find(s => s.id === state.home.selectedShipId);
 export const selectHomeTiles = (state: RootState) => state.home.tiles;
 export const selectPlacementMode = (state: RootState) => state.home.placementMode;
 export const selectHomePlayer = (state: RootState) => state.home.source;
+export const selectIsHomeBoardCompleted = (state: RootState) => state.home.ships.filter(ship => !ship.placed).length === 0;

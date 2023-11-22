@@ -48,7 +48,7 @@ public class GamesService {
 
     public Game findByCode(String code) {
         return games.stream()
-                .filter(g -> g.code().equals(code))
+                .filter(g -> g.code().equalsIgnoreCase(code))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Game '" + code + "' not found!"));
     }
@@ -59,7 +59,7 @@ public class GamesService {
     }
 
     public void delete(String code) {
-        games.removeIf(game -> game.code().equals(code));
+        games.removeIf(game -> game.code().equalsIgnoreCase(code));
     }
 
     public AttackBoard shot(String code, GameShot request) {
@@ -79,7 +79,7 @@ public class GamesService {
         final var game = findByCode(code);
         return Stream.of(game.player1(), game.player2())
                 .filter(Objects::nonNull)
-                .filter(p -> name.equals(p.name()))
+                .filter(p -> name.equalsIgnoreCase(p.name()))
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Player '" + name + "' not found!"));
 

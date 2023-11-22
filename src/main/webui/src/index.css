@@ -6,7 +6,8 @@
 }
 
 html,
-body {
+body,
+div#root {
   width: 100%;
   height: 100%;
 }
@@ -21,13 +22,6 @@ body {
   html {
     color-scheme: dark;
   }
-}
-
-main {
-  padding-top: 4em;
-  width: 100%;
-  height: 100%;
-  padding: 2em;
 }
 
 button,

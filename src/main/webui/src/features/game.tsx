@@ -1,15 +1,17 @@
 import { useState } from 'react';
+import { ErrorsComponent } from '../app/errors/errors.component';
 import { useDispatch, useSelector } from '../app/store/hooks';
 import { AttackBoard } from './attack/attack-board';
 import './game.scss';
 import { create, join, selectGameConnected } from './game.slice';
 import { HomeBoard } from './home/home-board';
-import { selectHomeTiles } from './home/home.slice';
+import { selectHomeTiles, selectIsHomeBoardCompleted } from './home/home.slice';
 
 function Game() {
   const dispatch = useDispatch();
 
   const homeTiles = useSelector(selectHomeTiles);
+  const isHomeBoardCompleted = useSelector(selectIsHomeBoardCompleted);
   const connected = useSelector(selectGameConnected);
 
   const [gameCode, setGameCode] = useState('');
@@ -19,20 +21,11 @@ function Game() {
   const joinGame = () => dispatch(join({ player: playerName, board: { tiles: homeTiles }, gameCode }));
 
   return (
-    <div className="container">
-      <HomeBoard />
-      {(!connected && (
-        <div className="toolbar">
-          <div>
-            <input
-              id="playerNameCreation"
-              placeholder="Player name..."
-              value={playerName}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPlayerName(e.target.value)}
-            />
-            <button onClick={createGame}>Create</button>
-          </div>
-          <div>
+    <div className="game">
+      <main>
+        <HomeBoard />
+        {(!connected && (
+          <div className="toolbar">
             <input
               id="gameCode"
               placeholder="Game code..."
@@ -45,10 +38,23 @@ function Game() {
               value={playerName}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPlayerName(e.target.value)}
             />
-            <button onClick={joinGame}>Connect</button>
+            <div>
+              <button onClick={joinGame} disabled={!playerName || !gameCode}>
+                Connect
+              </button>
+              <span>or</span>
+              <button onClick={createGame} disabled={!playerName || !isHomeBoardCompleted}>
+                Create
+              </button>
+            </div>
+            <ul>
+              <li>Set only player name to create a new game and both to connect to an existing game</li>
+              {!isHomeBoardCompleted && <li>Complete your board to create a new game</li>}
+            </ul>
           </div>
-        </div>
-      )) || <AttackBoard />}
+        )) || <AttackBoard />}
+      </main>
+      <ErrorsComponent />
     </div>
   );
 }

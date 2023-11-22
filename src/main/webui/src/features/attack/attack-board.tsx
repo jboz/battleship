@@ -15,20 +15,19 @@ export const AttackBoard = () => {
   };
 
   return (
-    <div className="container">
-      <div className="title">
+    <div className="attack-board">
+      <title>
         <h1>Attack Board</h1>
         {playerName && (
           <>
-            <span>-</span>
-            <h1>{playerName}</h1>
+            <h2>{playerName}</h2>
           </>
         )}
-      </div>
+      </title>
 
-      <div className="boardContainer">
+      <main>
         <BoardComponent tiles={tiles} onClick={onTileClick} />
-      </div>
+      </main>
     </div>
   );
 };

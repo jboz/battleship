@@ -3,7 +3,7 @@ import { BoardComponent } from '../../app/components/board';
 import { HomeBoardTile } from '../../app/components/utils';
 import { useSelector } from '../../app/store/hooks';
 import { useHotkeys } from '../../app/use-hotkeys';
-import { selectGameConnected, selectHomePlayerName } from '../game.slice';
+import { selectGameCode, selectGameConnected, selectHomePlayerName } from '../game.slice';
 import './home-board.scss';
 import {
   markHover,
@@ -12,6 +12,7 @@ import {
   selectPlacementMode,
   selectSelectedShip,
   selectShips,
+  selectShipsToPlace,
   setSelectedShip,
   togglePlacementMode,
   tryToPlaceShip,
@@ -23,10 +24,12 @@ export const HomeBoard = () => {
 
   const placementMode = useSelector(selectPlacementMode);
   const ships = useSelector(selectShips);
+  const shipsToPlace = useSelector(selectShipsToPlace);
   const selectedShip = useSelector(selectSelectedShip);
   const tiles = useSelector(selectHomeTiles);
   const playerName = useSelector(selectHomePlayerName);
   const connected = useSelector(selectGameConnected);
+  const gameCode = useSelector(selectGameCode);
 
   const onTileMouseEnter = (hoverTile: HomeBoardTile) => dispatch(markHover(hoverTile));
 
@@ -53,8 +56,9 @@ export const HomeBoard = () => {
         <h1>Home Board</h1>
         {playerName && (
           <>
-            <span>-</span>
-            <h1>{playerName}</h1>
+            <h2>
+              {gameCode} - {playerName}
+            </h2>
           </>
         )}
       </title>
@@ -72,23 +76,21 @@ export const HomeBoard = () => {
       <main>
         <BoardComponent tiles={tiles} onClick={onTileClick} onMouseEnter={onTileMouseEnter} onMouseOut={onTileMouseOut} />
         {!connected && (
-          <ul>
-            {ships
-              .filter(s => !s.placed)
-              .map((ship, index) => (
-                <li key={index} className="ship" onClick={() => dispatch(setSelectedShip(ship.id))}>
-                  {Array.from({ length: ship.size }).map((_, index) => (
-                    <div
-                      key={ship.id + index}
-                      className="cell"
-                      style={{
-                        backgroundColor: !ship.placed ? ship.color : '#84808b',
-                        borderColor: selectedShip?.id === ship.id ? '#e6e2f1' : '#272138'
-                      }}
-                    ></div>
-                  ))}
-                </li>
-              ))}
+          <ul style={{ minWidth: (shipsToPlace.length > 0 && '170px') || '' }}>
+            {ships.map((ship, index) => (
+              <li key={index} className="ship" onClick={() => !ship.placed && dispatch(setSelectedShip(ship.id))}>
+                {Array.from({ length: ship.size }).map((_, index) => (
+                  <div
+                    key={ship.id + index}
+                    className="cell"
+                    style={{
+                      backgroundColor: !ship.placed ? ship.color : '#84808b',
+                      borderColor: selectedShip?.id === ship.id ? '#e6e2f1' : '#272138'
+                    }}
+                  ></div>
+                ))}
+              </li>
+            ))}
           </ul>
         )}
       </main>

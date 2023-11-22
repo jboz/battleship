@@ -1,3 +1,4 @@
+import { JsonProblem, JsonProblemError } from './errors/errors.model';
 import { Coordinate, Game, GameJoining, PlayerId, Shot, Tile } from './model';
 
 const API_URL = '/api/games';
@@ -13,7 +14,7 @@ function fetchUrl<T>(serviceUrl: string, method: 'GET' | 'POST' | 'PUT' = 'GET',
     .then(response => response.json())
     .then(data => {
       if (data.status >= 400) {
-        throw new Error(data.title);
+        throw new JsonProblemError(data as JsonProblem);
       }
       return data;
     });

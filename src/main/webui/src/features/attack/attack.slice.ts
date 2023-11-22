@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import GameApi from '../../app/api.service';
 import { AttackBoardTile, initTiles } from '../../app/components/utils';
-import { AttackTile, Coordinate, PlayerId } from '../../app/model';
+import { AttackTile, Coordinate, PlayerId, Tile } from '../../app/model';
 import { createAsyncThunk } from '../../app/store/hooks';
 import { RootState } from '../../app/store/store';
 import { selectGameCode } from '../game.slice';
@@ -15,12 +15,10 @@ const initialState: AttackState = {
   tiles: initTiles<AttackBoardTile>()
 };
 
-export const shot = createAsyncThunk<void, Coordinate>('attack/shot', (coord, { getState }) => {
+export const shot = createAsyncThunk<Tile[], Coordinate>('attack/shot', (coord, { getState }) => {
   const code = selectGameCode(getState());
   const target = selectAttackTarget(getState());
-  if (code && target) {
-    GameApi.shot(code, target, coord);
-  }
+  return GameApi.shot(code!, target!, coord);
 });
 
 export const attackSlice = createSlice({
@@ -45,7 +43,6 @@ export const attackSlice = createSlice({
 
 const findTile = (tiles: AttackTile[], coord: Coordinate) => tiles.find(tile => tile.coord.x === coord.x && tile.coord.y === coord.y);
 
-export const { reducer: attackReducer } = attackSlice;
 export const { setTarget: setTargetPlayer, setTiles: setAttackTiles } = attackSlice.actions;
 
 export const selectAttackTarget = (state: RootState) => state.attack.target;
