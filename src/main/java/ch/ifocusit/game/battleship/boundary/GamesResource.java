@@ -5,8 +5,8 @@ import java.util.List;
 import org.jboss.resteasy.reactive.RestPath;
 import org.jboss.resteasy.reactive.RestQuery;
 
-import ch.ifocusit.game.battleship.domain.model.GameHit;
 import ch.ifocusit.game.battleship.domain.model.GameJoining;
+import ch.ifocusit.game.battleship.domain.model.GameShot;
 import ch.ifocusit.game.battleship.domain.model.GameSummary;
 import ch.ifocusit.game.battleship.domain.model.Player;
 import ch.ifocusit.game.battleship.domain.model.PlayerId;
@@ -68,9 +68,9 @@ public class GamesResource {
     }
 
     @PUT()
-    @Path("/{code}/hit")
-    public AttackBoard hit(@RestPath("code") String code, @Valid @NotNull GameHit request) {
-        return service.hit(code, request);
+    @Path("/{code}/shot")
+    public AttackBoard shot(@RestPath("code") String code, @Valid @NotNull GameShot request) {
+        return service.shot(code, request);
     }
 
     @GET

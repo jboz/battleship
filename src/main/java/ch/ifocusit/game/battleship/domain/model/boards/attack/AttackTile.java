@@ -16,6 +16,11 @@ public class AttackTile extends Tile {
     @Accessors(chain = true)
     boolean touched;
 
+    @Getter
+    @Setter
+    @Accessors(chain = true)
+    String destroyedShipdId;
+
     public AttackTile(@NotNull Coordinate coord) {
         super(coord);
         hitted = true;

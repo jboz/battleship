@@ -1,4 +1,4 @@
-import { Coordinate, Game, GameJoining, Hit, PlayerId, Tile } from './model';
+import { Coordinate, Game, GameJoining, PlayerId, Shot, Tile } from './model';
 
 const API_URL = '/api/games';
 
@@ -24,7 +24,8 @@ const GameApi = {
 
   join: (gameCode: string, request: GameJoining) => fetchUrl<Game>(`/${gameCode}/join`, 'PUT', request),
 
-  hit: (gameCode: string, target: PlayerId, coords: Coordinate) => fetchUrl<Tile[]>(`/${gameCode}/hit`, 'PUT', { target, coords } as Hit),
+  shot: (gameCode: string, target: PlayerId, coords: Coordinate) =>
+    fetchUrl<Tile[]>(`/${gameCode}/shot`, 'PUT', { target, coords } as Shot),
 
   connect: (gameCode: string, playerId: PlayerId) => new EventSource(`${API_URL}/${gameCode}/players/${playerId}/events`)
 };

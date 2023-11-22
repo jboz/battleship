@@ -40,8 +40,7 @@ export const homeSlice = createSlice({
   name: 'home',
   initialState,
   reducers: {
-    setSelectedShip: (state, { payload }: PayloadAction<Ship>) => {
-      const shipId = payload.id;
+    setSelectedShip: (state, { payload: shipId }: PayloadAction<string>) => {
       const ship = state.ships.find(ship => ship.id === shipId);
       state.selectedShipId = shipId;
       if (!ship) {
@@ -57,9 +56,9 @@ export const homeSlice = createSlice({
           tile.hoverColor = ship?.color + '55';
         });
     },
-    markHover: (state, { payload }: PayloadAction<HomeBoardTile>) => {
+    clearShipSelection: state => (state.selectedShipId = undefined),
+    markHover: (state, { payload: hoverTile }: PayloadAction<HomeBoardTile>) => {
       const selectedShip = state.ships.find(s => s.id === state.selectedShipId);
-      const hoverTile = payload;
       if (selectedShip && !hoverTile.shipId) {
         const matchTiles = getMatchBoardTiles(selectedShip, hoverTile, state.tiles, state.placementMode);
         if (matchTiles.length !== selectedShip.size) {
@@ -71,12 +70,12 @@ export const homeSlice = createSlice({
     unmarkHover: state => {
       state.tiles.forEach(tile => (tile.hoverColor = undefined));
     },
-    tryToPlaceShip: (state, { payload }: PayloadAction<HomeBoardTile>) => {
+    tryToPlaceShip: (state, { payload: startBoardTile }: PayloadAction<HomeBoardTile>) => {
       const selectedShip = state.ships.find(s => s.id === state.selectedShipId);
       if (!selectedShip) {
         return;
       }
-      const matchTiles = getMatchBoardTiles(selectedShip, payload, state.tiles, state.placementMode);
+      const matchTiles = getMatchBoardTiles(selectedShip, startBoardTile, state.tiles, state.placementMode);
       if (matchTiles.length < selectedShip.size) {
         return;
       }
@@ -102,17 +101,21 @@ export const homeSlice = createSlice({
     togglePlacementMode: state => {
       state.placementMode = state.placementMode === 'horizontal' ? 'vertical' : 'horizontal';
     },
-    setPlayer: (state, { payload }: PayloadAction<PlayerId>) => {
-      state.source = payload;
+    setPlayer: (state, { payload: playerId }: PayloadAction<PlayerId>) => {
+      state.source = playerId;
     },
-    setTiles: (state, { payload }: PayloadAction<HomeTile[]>) => {
-      if (payload.length === initialState.tiles.length) {
-        state.tiles = payload.map(tile => {
+    setTiles: (state, { payload: tiles }: PayloadAction<HomeTile[]>) => {
+      if (tiles.length === initialState.tiles.length) {
+        state.tiles = tiles.map(tile => {
           const ship = state.ships.find(s => s.id === tile.shipId);
           if (ship) {
             ship.placed = true;
           }
-          return { ...tile, color: tile.hitted ? (ship ? darker(ship?.color) : '#828282') : ship?.color || '#e6e2f1' } as HomeBoardTile;
+          const destroyed = tiles.filter(tile => tile.shipId === ship?.id && tile.hitted).length === ship?.size;
+          return {
+            ...tile,
+            color: destroyed ? '#101010' : tile.hitted ? (ship ? darker(ship?.color) : '#828282') : ship?.color || '#e6e2f1'
+          } as HomeBoardTile;
         });
       }
     }
@@ -130,7 +133,8 @@ export const {
   reset,
   togglePlacementMode,
   setPlayer: setHomePlayer,
-  setTiles: setHomeTiles
+  setTiles: setHomeTiles,
+  clearShipSelection
 } = homeSlice.actions;
 
 export const selectShips = (state: RootState) => state.home.ships;

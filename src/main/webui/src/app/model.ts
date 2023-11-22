@@ -15,6 +15,7 @@ export type HomeTile = Tile & {
 export type AttackTile = Tile & {
   hitted?: boolean;
   touched?: boolean;
+  destroyedShipdId?: string;
 };
 
 export interface Game {
@@ -42,7 +43,7 @@ export interface GameJoining {
   };
 }
 
-export interface Hit {
+export interface Shot {
   target: PlayerId;
   coords: Coordinate;
 }

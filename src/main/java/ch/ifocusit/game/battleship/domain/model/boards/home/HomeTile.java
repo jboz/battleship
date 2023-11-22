@@ -31,7 +31,7 @@ public class HomeTile extends Tile {
         return hitted && hasShip();
     }
 
-    public HomeTile hit() {
+    public HomeTile shot() {
         this.hitted = true;
         return this;
     }

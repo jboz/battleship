@@ -9,15 +9,19 @@ import jakarta.annotation.Nonnull;
 public record Player(@Nonnull PlayerId id, @Nonnull String name, @Nonnull HomeBoard homeBoard,
         @Nonnull AttackBoard attackBoard) {
 
-    public void hit(Coordinate coords, HomeBoard targetBoard) {
+    public void shot(Coordinate coords, HomeBoard targetBoard) {
         if (!attackBoard.contains(coords)) {
             attackBoard.add(new AttackTile(coords));
         }
-        attackBoard.updates(hit -> hit.setTouched(targetBoard.contains(hit.getCoord())));
+        attackBoard.updates(shot -> shot.setTouched(targetBoard.contains(shot.getCoord())));
     }
 
-    public void updateBoard(AttackBoard hits) {
-        homeBoard.impacts(hits);
+    public void detectDestoyed(HomeBoard targetBoard) {
+        attackBoard.updates(shot -> shot.setDestroyedShipdId(targetBoard.getShipIdIfDestroyed(shot.getCoord())));
+    }
+
+    public void updateBoard(AttackBoard shots) {
+        homeBoard.impacts(shots);
     }
 
     public boolean allIsTouched() {

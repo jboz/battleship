@@ -16,7 +16,7 @@ public class AttackBoard extends Board<AttackTile> {
         tiles = tiles.stream().map(mapFunction).collect(Collectors.toList());
     }
 
-    public void add(AttackTile hit) {
-        tiles.add(hit);
+    public void add(AttackTile shot) {
+        tiles.add(shot);
     }
 }

@@ -31,8 +31,8 @@ Content-Type: application/json
   }
 }
 
-### hit
-PUT {{API}}/games/game1/hit
+### shot
+PUT {{API}}/games/game1/shot
 Content-Type: application/json
 
 {

@@ -4,7 +4,7 @@ import { FinishedEvent, Game, GameJoining, PlayerEvent, PlayerId } from '../app/
 import { createAsyncThunk } from '../app/store/hooks';
 import { RootState } from '../app/store/store';
 import { setAttackTiles, setTargetPlayer } from './attack/attack.slice';
-import { selectHomePlayer, setHomePlayer, setHomeTiles } from './home/home.slice';
+import { clearShipSelection, selectHomePlayer, setHomePlayer, setHomeTiles } from './home/home.slice';
 
 interface GameState {
   game?: Game;
@@ -27,6 +27,7 @@ export const join = createAsyncThunk('game/join', (request: GameJoining, { dispa
       dispatch(setGame(game));
       dispatch(setHomePlayer(game.player1 === request.player ? PlayerId.player1 : PlayerId.player2));
       dispatch(setTargetPlayer(game.player1 === request.player ? PlayerId.player2 : PlayerId.player1));
+      dispatch(clearShipSelection());
       dispatch(listen());
     });
 });
@@ -63,5 +64,9 @@ const { setGame } = gameSlice.actions;
 
 export const { reducer: gameReducer } = gameSlice;
 
+export const selectGameConnected = (state: RootState) => !!state.game.game;
 export const selectGameCode = (state: RootState) => state.game.game?.code;
-export const selectGameStatus = (state: RootState) => state.game.game?.status;
+export const selectHomePlayerName = (state: RootState) =>
+  state.home.source === PlayerId.player1 ? state.game.game?.player1 : state.game.game?.player2;
+export const selectAttackPlayerName = (state: RootState) =>
+  state.attack.target === PlayerId.player1 ? state.game.game?.player1 : state.game.game?.player2;

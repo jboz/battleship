@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.groupingBy;
 
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,6 +18,7 @@ public class HomeBoard extends Board<HomeTile> {
     @JsonIgnore
     public List<Ship> getShips() {
         return tiles.stream()
+                .filter(tile -> Objects.nonNull(tile.getShipId()))
                 .collect(groupingBy(HomeTile::getShipId))
                 .entrySet().stream()
                 .map(this::mapToShip)
@@ -35,14 +37,22 @@ public class HomeBoard extends Board<HomeTile> {
         return tiles.stream().filter(HomeTile::hasShip).anyMatch(z -> z.same(coords));
     }
 
-    public void impacts(AttackBoard hits) {
-        hits.forEach(hit -> {
-            getTile(hit.getCoord()).ifPresent(tile -> tile.hit());
+    public void impacts(AttackBoard shots) {
+        shots.forEach(shot -> {
+            getTile(shot.getCoord()).ifPresent(tile -> tile.shot());
         });
     }
 
     @JsonIgnore
     public boolean allIsTouched() {
         return tiles.stream().allMatch(HomeTile::isTouched);
+    }
+
+    public String getShipIdIfDestroyed(Coordinate coords) {
+        return getShips().stream()
+                .filter(ship -> ship.contains(coords) && ship.isDestroyed())
+                .findFirst()
+                .map(ship -> ship.id())
+                .orElse(null);
     }
 }

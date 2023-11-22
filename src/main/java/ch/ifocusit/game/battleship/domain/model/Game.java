@@ -45,19 +45,19 @@ public class Game {
         return new GameSummary(code, status, playerName(player1), playerName(player2));
     }
 
-    public Player hit(PlayerId targetId, Coordinate hit) {
+    public Player shot(PlayerId targetId, Coordinate shot) {
         final var target = PlayerId.player2.equals(targetId) ? player2 : player1;
         final var source = PlayerId.player1.equals(targetId) ? player2 : player1;
 
-        source.hit(hit, target.homeBoard());
+        source.shot(shot, target.homeBoard());
         target.updateBoard(source.attackBoard());
-
-        refreshStatus();
+        source.detectDestoyed(target.homeBoard());
+        updateStatus();
 
         return source;
     }
 
-    private void refreshStatus() {
+    private void updateStatus() {
         if (player1.allIsTouched() || player2.allIsTouched()) {
             status = Status.FINISHED;
         }

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from '../app/store/hooks';
 import { AttackBoard } from './attack/attack-board';
 import './game.scss';
-import { create, join, selectGameStatus } from './game.slice';
+import { create, join, selectGameConnected } from './game.slice';
 import { HomeBoard } from './home/home-board';
 import { selectHomeTiles } from './home/home.slice';
 
@@ -10,7 +10,7 @@ function Game() {
   const dispatch = useDispatch();
 
   const homeTiles = useSelector(selectHomeTiles);
-  const gameStatus = useSelector(selectGameStatus);
+  const connected = useSelector(selectGameConnected);
 
   const [gameCode, setGameCode] = useState('');
   const [playerName, setPlayerName] = useState('');
@@ -21,7 +21,7 @@ function Game() {
   return (
     <div className="container">
       <HomeBoard />
-      {(!gameStatus || gameStatus === 'CREATION') && (
+      {(!connected && (
         <div className="toolbar">
           <div>
             <input
@@ -48,8 +48,7 @@ function Game() {
             <button onClick={joinGame}>Connect</button>
           </div>
         </div>
-      )}
-      <AttackBoard />
+      )) || <AttackBoard />}
     </div>
   );
 }

@@ -15,11 +15,11 @@ const initialState: AttackState = {
   tiles: initTiles<AttackBoardTile>()
 };
 
-export const hit = createAsyncThunk<void, Coordinate>('attack/hit', (coord, { getState }) => {
+export const shot = createAsyncThunk<void, Coordinate>('attack/shot', (coord, { getState }) => {
   const code = selectGameCode(getState());
   const target = selectAttackTarget(getState());
   if (code && target) {
-    GameApi.hit(code, target, coord);
+    GameApi.shot(code, target, coord);
   }
 });
 
@@ -36,7 +36,7 @@ export const attackSlice = createSlice({
         return {
           ...tile,
           ...serverTile,
-          color: serverTile?.touched ? '#65000b' : serverTile?.hitted ? '#828282' : '#e6e2f1'
+          color: serverTile?.destroyedShipdId ? '#101010' : serverTile?.touched ? '#65000b' : serverTile?.hitted ? '#828282' : '#e6e2f1'
         } as AttackBoardTile;
       });
     }
