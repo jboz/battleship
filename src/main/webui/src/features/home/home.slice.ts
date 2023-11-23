@@ -43,6 +43,7 @@ export const homeSlice = createSlice({
   name: 'home',
   initialState,
   reducers: {
+    restoreDefaultState: state => (state = { ...initialState }),
     setSelectedShip: (state, { payload: shipId }: PayloadAction<string>) => {
       const ship = state.ships.find(ship => ship.id === shipId);
       state.selectedShipId = shipId;
@@ -133,7 +134,8 @@ export const {
   togglePlacementMode,
   setPlayer: setHomePlayer,
   setTiles: setHomeTiles,
-  clearShipSelection
+  clearShipSelection,
+  restoreDefaultState
 } = homeSlice.actions;
 
 export const selectShips = (state: RootState) => state.home.ships;

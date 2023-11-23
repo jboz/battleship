@@ -2,10 +2,9 @@ package ch.ifocusit.game.battleship.domain.model.events;
 
 import ch.ifocusit.game.battleship.domain.model.PlayerId;
 
-public record FinishEvent(String code, PlayerId winner) implements Event {
+public record FinishEvent(String gameCode, PlayerId winner) implements Event {
     @Override
     public String channel() {
-        return code;
+        return gameCode;
     }
 }
-

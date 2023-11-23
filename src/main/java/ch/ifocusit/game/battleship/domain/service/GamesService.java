@@ -13,6 +13,7 @@ import ch.ifocusit.game.battleship.domain.model.Player;
 import ch.ifocusit.game.battleship.domain.model.boards.attack.AttackBoard;
 import ch.ifocusit.game.battleship.domain.model.events.FinishEvent;
 import ch.ifocusit.game.battleship.domain.model.events.PlayerEvent;
+import ch.ifocusit.game.battleship.domain.model.events.ShotEvent;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import jakarta.ws.rs.NotFoundException;
@@ -68,6 +69,8 @@ public class GamesService {
 
         eventsService.publish(new PlayerEvent(game.code(), game.player1()));
         eventsService.publish(new PlayerEvent(game.code(), game.player2()));
+
+        eventsService.publish(new ShotEvent(game.code(), source.id(), request.coords()));
 
         if (game.finished()) {
             eventsService.publish(new FinishEvent(game.code(), game.winner()));

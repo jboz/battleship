@@ -12,6 +12,7 @@ export const errorsSlice = createSlice({
   name: 'errors',
   initialState,
   reducers: {
+    restoreDefaultState: state => (state = { ...initialState }),
     addError: (state, { payload: error }: PayloadAction<JsonProblem | string>) => {
       state.errors = [...state.errors, error];
     },
@@ -21,7 +22,7 @@ export const errorsSlice = createSlice({
   }
 });
 
-export const { addError, clearErrors } = errorsSlice.actions;
+export const { addError, clearErrors, restoreDefaultState } = errorsSlice.actions;
 
 export const { reducer: errorsReducer } = errorsSlice;
 

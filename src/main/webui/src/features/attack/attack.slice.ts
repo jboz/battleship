@@ -25,6 +25,7 @@ export const attackSlice = createSlice({
   name: 'attack',
   initialState,
   reducers: {
+    restoreDefaultState: state => (state = { ...initialState }),
     setTarget: (state, { payload }: PayloadAction<PlayerId>) => {
       state.target = payload;
     },
@@ -43,7 +44,7 @@ export const attackSlice = createSlice({
 
 const findTile = (tiles: AttackTile[], coord: Coordinate) => tiles.find(tile => tile.coord.x === coord.x && tile.coord.y === coord.y);
 
-export const { setTarget: setTargetPlayer, setTiles: setAttackTiles } = attackSlice.actions;
+export const { setTarget: setTargetPlayer, setTiles: setAttackTiles, restoreDefaultState } = attackSlice.actions;
 
 export const selectAttackTarget = (state: RootState) => state.attack.target;
 export const selectAttackTiles = (state: RootState) => state.attack.tiles;

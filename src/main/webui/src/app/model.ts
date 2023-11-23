@@ -59,6 +59,10 @@ export interface PlayerEvent {
   };
 }
 
+export interface ShotEvent {
+  shot: Coordinate;
+}
+
 export interface FinishedEvent {
   winner: PlayerId;
 }

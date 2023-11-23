@@ -15,7 +15,6 @@ div#root {
 body {
   color: #fff;
   background: #17141f;
-  padding: 2em;
 }
 
 @media (prefers-color-scheme: dark) {

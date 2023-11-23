@@ -3,7 +3,7 @@ import { BoardComponent } from '../../app/components/board';
 import { HomeBoardTile } from '../../app/components/utils';
 import { useSelector } from '../../app/store/hooks';
 import { useHotkeys } from '../../app/use-hotkeys';
-import { selectGameCode, selectGameConnected, selectHomePlayerName } from '../game.slice';
+import { selectGameConnected, selectHomePlayerName } from '../game.slice';
 import './home-board.scss';
 import {
   markHover,
@@ -29,7 +29,6 @@ export const HomeBoard = () => {
   const tiles = useSelector(selectHomeTiles);
   const playerName = useSelector(selectHomePlayerName);
   const connected = useSelector(selectGameConnected);
-  const gameCode = useSelector(selectGameCode);
 
   const onTileMouseEnter = (hoverTile: HomeBoardTile) => dispatch(markHover(hoverTile));
 
@@ -56,9 +55,7 @@ export const HomeBoard = () => {
         <h1>Home Board</h1>
         {playerName && (
           <>
-            <h2>
-              {gameCode} - {playerName}
-            </h2>
+            <h2>{playerName}</h2>
           </>
         )}
       </title>

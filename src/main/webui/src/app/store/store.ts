@@ -2,6 +2,7 @@ import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
 import { attackSlice } from '../../features/attack/attack.slice';
 import { gameSlice } from '../../features/game.slice';
 import { homeSlice } from '../../features/home/home.slice';
+import { shotsLogSlice } from '../../features/shots-log/shots-log.slice';
 import { errorsSlice } from '../errors/errors.slice';
 
 export const store = configureStore({
@@ -9,7 +10,8 @@ export const store = configureStore({
     home: homeSlice.reducer,
     attack: attackSlice.reducer,
     game: gameSlice.reducer,
-    errors: errorsSlice.reducer
+    errors: errorsSlice.reducer,
+    shotLog: shotsLogSlice.reducer
   }
 });
 

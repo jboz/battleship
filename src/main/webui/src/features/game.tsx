@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useWindowSize } from '@uidotdev/usehooks';
+import { useEffect, useState } from 'react';
 import { ErrorsComponent } from '../app/errors/errors.component';
 import { useDispatch, useSelector } from '../app/store/hooks';
 import { AttackBoard } from './attack/attack-board';
@@ -6,6 +7,7 @@ import './game.scss';
 import { create, join, selectGameConnected } from './game.slice';
 import { HomeBoard } from './home/home-board';
 import { selectHomeTiles, selectIsHomeBoardCompleted } from './home/home.slice';
+import { Settings } from './settings/settings';
 
 function Game() {
   const dispatch = useDispatch();
@@ -20,11 +22,26 @@ function Game() {
   const createGame = () => dispatch(create({ player: playerName, board: { tiles: homeTiles } }));
   const joinGame = () => dispatch(join({ player: playerName, board: { tiles: homeTiles }, gameCode }));
 
+  const size = useWindowSize();
+  const [sideBarVisible, setSideBarVisible] = useState(true);
+  const toggleSideBar = () => setSideBarVisible(!sideBarVisible);
+  const [autoHide, setAutoHide] = useState(false);
+
+  useEffect(() => {
+    if (size.width && (size.width < 622 || (size.width > 845 && size.width < 1130))) {
+      setAutoHide(true);
+      setSideBarVisible(false);
+    } else {
+      setAutoHide(false);
+      setSideBarVisible(true);
+    }
+  }, [size]);
+
   return (
     <div className="game">
       <main>
         <HomeBoard />
-        {(!connected && (
+        {!connected && (
           <div className="toolbar">
             <input
               id="gameCode"
@@ -52,9 +69,22 @@ function Game() {
               {!isHomeBoardCompleted && <li>Complete your board to create a new game</li>}
             </ul>
           </div>
-        )) || <AttackBoard />}
+        )}
+        {connected && <AttackBoard />}
       </main>
-      <ErrorsComponent />
+      {connected && (
+        <>
+          <aside style={{ position: autoHide ? 'fixed' : 'initial' }}>
+            {(sideBarVisible && <button onClick={toggleSideBar}>&gt;</button>) || <button onClick={toggleSideBar}>&lt;</button>}
+            <div style={{ display: sideBarVisible ? 'block' : 'none' }}>
+              <Settings />
+            </div>
+          </aside>
+        </>
+      )}
+      <footer>
+        <ErrorsComponent />
+      </footer>
     </div>
   );
 }
