@@ -5,6 +5,7 @@ import ch.ifocusit.game.battleship.domain.model.boards.attack.AttackBoard;
 import ch.ifocusit.game.battleship.domain.model.tile.Coordinate;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
@@ -16,6 +17,8 @@ public class Game {
     Status status = Status.CREATION;
     Player player1;
     Player player2;
+    @Setter
+    PlayerId nextPlayerId;
 
     public static Game create(String code, GameJoining creationRequest) {
         Game game = new Game();
@@ -43,7 +46,7 @@ public class Game {
     }
 
     public GameSummary summarize() {
-        return new GameSummary(code, status, playerName(player1), playerName(player2));
+        return new GameSummary(code, status, playerName(player1), playerName(player2), nextPlayerId);
     }
 
     public Player shot(PlayerId targetId, Coordinate shot) {

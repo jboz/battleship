@@ -1,5 +1,6 @@
 package ch.ifocusit.game.battleship.domain.model.boards.attack;
 
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,10 @@ public class AttackBoard extends Board<AttackTile> {
 
     public boolean contains(Coordinate coords) {
         return tiles.stream().anyMatch(z -> z.same(coords));
+    }
+
+    public Optional<AttackTile> get(Coordinate coords) {
+        return tiles.stream().filter(z -> z.same(coords)).findFirst();
     }
 
     public void updates(Function<AttackTile, AttackTile> mapFunction) {

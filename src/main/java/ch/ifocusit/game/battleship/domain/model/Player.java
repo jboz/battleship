@@ -28,4 +28,8 @@ public record Player(@Nonnull PlayerId id, @Nonnull String name, @Nonnull HomeBo
         return homeBoard.allIsTouched();
     }
 
+    public boolean attackTouched(Coordinate coords) {
+        return attackBoard.get(coords).map(AttackTile::isTouched).orElse(false);
+    }
+
 }

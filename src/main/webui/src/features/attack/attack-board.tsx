@@ -3,14 +3,18 @@ import { AttackBoardTile } from '../../app/components/utils';
 import { useDispatch, useSelector } from '../../app/store/hooks';
 import { selectAttackPlayerName } from '../game.slice';
 import './attack-board.scss';
-import { selectAttackTiles, shot } from './attack.slice';
+import { selectAttackBoardBloqued, selectAttackTiles, shot } from './attack.slice';
 
 export const AttackBoard = () => {
   const dispatch = useDispatch();
   const tiles = useSelector(selectAttackTiles);
   const playerName = useSelector(selectAttackPlayerName);
+  const bloqued = useSelector(selectAttackBoardBloqued);
 
   const onTileClick = (tile: AttackBoardTile) => {
+    if (bloqued) {
+      return;
+    }
     dispatch(shot(tile.coord));
   };
 
@@ -27,6 +31,16 @@ export const AttackBoard = () => {
 
       <main>
         <BoardComponent tiles={tiles} onClick={onTileClick} />
+        {!playerName && (
+          <div className="overlay">
+            <span>Wainting for player</span>
+          </div>
+        )}
+        {bloqued && (
+          <div className="overlay">
+            <span>{playerName}'s turn</span>
+          </div>
+        )}
       </main>
     </div>
   );

@@ -9,6 +9,9 @@ import { HomeBoard } from './home/home-board';
 import { selectHomeTiles, selectIsHomeBoardCompleted } from './home/home.slice';
 import { Settings } from './settings/settings';
 
+const readPlayernameFomrLocalStorage = () => localStorage.getItem('battleshipPlayerName') || '';
+const writePlayernameFomrLocalStorage = (playerName: string) => localStorage.setItem('battleshipPlayerName', playerName);
+
 function Game() {
   const dispatch = useDispatch();
 
@@ -17,10 +20,16 @@ function Game() {
   const connected = useSelector(selectGameConnected);
 
   const [gameCode, setGameCode] = useState('');
-  const [playerName, setPlayerName] = useState('');
+  const [playerName, setPlayerName] = useState(readPlayernameFomrLocalStorage());
 
-  const createGame = () => dispatch(create({ player: playerName, board: { tiles: homeTiles } }));
-  const joinGame = () => dispatch(join({ player: playerName, board: { tiles: homeTiles }, gameCode }));
+  const createGame = () => {
+    writePlayernameFomrLocalStorage(playerName);
+    dispatch(create({ player: playerName, board: { tiles: homeTiles } }));
+  };
+  const joinGame = () => {
+    writePlayernameFomrLocalStorage(playerName);
+    dispatch(join({ player: playerName, board: { tiles: homeTiles }, gameCode }));
+  };
 
   const size = useWindowSize();
   const [sideBarVisible, setSideBarVisible] = useState(true);

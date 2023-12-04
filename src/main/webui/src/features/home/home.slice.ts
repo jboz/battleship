@@ -15,7 +15,7 @@ export interface Ship {
 }
 
 interface HomeState {
-  source?: PlayerId;
+  player?: PlayerId;
   tiles: HomeBoardTile[];
   ships: Ship[];
   selectedShipId?: string;
@@ -103,7 +103,7 @@ export const homeSlice = createSlice({
       state.placementMode = state.placementMode === 'horizontal' ? 'vertical' : 'horizontal';
     },
     setPlayer: (state, { payload: playerId }: PayloadAction<PlayerId>) => {
-      state.source = playerId;
+      state.player = playerId;
     },
     setTiles: (state, { payload: tiles }: PayloadAction<HomeTile[]>) => {
       if (tiles.length === initialState.tiles.length) {
@@ -143,5 +143,5 @@ export const selectShipsToPlace = (state: RootState) => state.home.ships.filter(
 export const selectSelectedShip = (state: RootState) => state.home.ships.find(s => s.id === state.home.selectedShipId);
 export const selectHomeTiles = (state: RootState) => state.home.tiles;
 export const selectPlacementMode = (state: RootState) => state.home.placementMode;
-export const selectHomePlayer = (state: RootState) => state.home.source;
+export const selectHomePlayer = (state: RootState) => state.home.player;
 export const selectIsHomeBoardCompleted = (state: RootState) => state.home.ships.filter(ship => !ship.placed).length === 0;

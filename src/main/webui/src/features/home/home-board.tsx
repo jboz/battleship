@@ -72,6 +72,7 @@ export const HomeBoard = () => {
 
       <main>
         <BoardComponent tiles={tiles} onClick={onTileClick} onMouseEnter={onTileMouseEnter} onMouseOut={onTileMouseOut} />
+        {connected && <div className="overlay"></div>}
         {!connected && (
           <ul style={{ minWidth: (shipsToPlace.length > 0 && '170px') || '' }}>
             {ships.map((ship, index) => (

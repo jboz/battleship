@@ -13,6 +13,7 @@ import ch.ifocusit.game.battleship.domain.model.Player;
 import ch.ifocusit.game.battleship.domain.model.boards.attack.AttackBoard;
 import ch.ifocusit.game.battleship.domain.model.events.FinishEvent;
 import ch.ifocusit.game.battleship.domain.model.events.PlayerEvent;
+import ch.ifocusit.game.battleship.domain.model.events.PlayerJoinedEvent;
 import ch.ifocusit.game.battleship.domain.model.events.ShotEvent;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -56,7 +57,11 @@ public class GamesService {
 
     public GameSummary join(String code, GameJoining request) {
         final var game = findByCode(code);
-        return game.join(request).summarize();
+        GameSummary summarized = game.join(request).summarize();
+        if (summarized.player2() != null) {
+            eventsService.publish(new PlayerJoinedEvent(code, summarized.player2()));
+        }
+        return summarized;
     }
 
     public void delete(String code) {
@@ -70,7 +75,13 @@ public class GamesService {
         eventsService.publish(new PlayerEvent(game.code(), game.player1()));
         eventsService.publish(new PlayerEvent(game.code(), game.player2()));
 
-        eventsService.publish(new ShotEvent(game.code(), source.id(), request.coords()));
+        boolean attackTouched = source.attackTouched(request.coords());
+
+        game.nextPlayerId(attackTouched ? source.id() : source.id().reverse());
+
+        eventsService
+                .publish(new ShotEvent(game.code(), source.id(), request.coords(),
+                        attackTouched, game.nextPlayerId()));
 
         if (game.finished()) {
             eventsService.publish(new FinishEvent(game.code(), game.winner()));

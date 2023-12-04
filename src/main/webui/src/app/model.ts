@@ -23,6 +23,7 @@ export interface Game {
   status: 'CREATION' | 'IN_PROGRESS' | 'FINISHED';
   player1?: string;
   player2?: string;
+  nextPlayer?: PlayerId;
 }
 
 export enum PlayerId {
@@ -59,8 +60,15 @@ export interface PlayerEvent {
   };
 }
 
+export interface PlayerJoinedEvent {
+  joinedPlayerName: string;
+}
+
 export interface ShotEvent {
+  source: PlayerId;
+  nextPlayer: PlayerId;
   shot: Coordinate;
+  touched: boolean;
 }
 
 export interface FinishedEvent {

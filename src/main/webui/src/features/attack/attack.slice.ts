@@ -7,17 +7,19 @@ import { RootState } from '../../app/store/store';
 import { selectGameCode } from '../game.slice';
 
 interface AttackState {
-  target?: PlayerId;
+  player?: PlayerId;
   tiles: AttackBoardTile[];
+  bloqued: boolean;
 }
 
 const initialState: AttackState = {
-  tiles: initTiles<AttackBoardTile>()
+  tiles: initTiles<AttackBoardTile>(),
+  bloqued: false
 };
 
 export const shot = createAsyncThunk<Tile[], Coordinate>('attack/shot', (coord, { getState }) => {
   const code = selectGameCode(getState());
-  const target = selectAttackTarget(getState());
+  const target = selectAttackPlayer(getState());
   return GameApi.shot(code!, target!, coord);
 });
 
@@ -26,25 +28,34 @@ export const attackSlice = createSlice({
   initialState,
   reducers: {
     restoreDefaultState: state => (state = { ...initialState }),
-    setTarget: (state, { payload }: PayloadAction<PlayerId>) => {
-      state.target = payload;
+    setPlayer: (state, { payload: target }: PayloadAction<PlayerId>) => {
+      state.player = target;
     },
-    setTiles: (state, { payload }: PayloadAction<AttackTile[]>) => {
+    setTiles: (state, { payload: tiles }: PayloadAction<AttackTile[]>) => {
       state.tiles = state.tiles.map(tile => {
-        const serverTile = findTile(payload, tile.coord);
+        const serverTile = findTile(tiles, tile.coord);
         return {
           ...tile,
           ...serverTile,
           color: serverTile?.destroyedShipdId ? '#101010' : serverTile?.touched ? '#65000b' : serverTile?.hitted ? '#828282' : '#e6e2f1'
         } as AttackBoardTile;
       });
+    },
+    setBloqued: (state, { payload: bloqued }: PayloadAction<boolean>) => {
+      state.bloqued = bloqued;
     }
   }
 });
 
 const findTile = (tiles: AttackTile[], coord: Coordinate) => tiles.find(tile => tile.coord.x === coord.x && tile.coord.y === coord.y);
 
-export const { setTarget: setTargetPlayer, setTiles: setAttackTiles, restoreDefaultState } = attackSlice.actions;
+export const {
+  setPlayer: setAttackPlayer,
+  setTiles: setAttackTiles,
+  restoreDefaultState,
+  setBloqued: setAttackBloqued
+} = attackSlice.actions;
 
-export const selectAttackTarget = (state: RootState) => state.attack.target;
+export const selectAttackPlayer = (state: RootState) => state.attack.player;
 export const selectAttackTiles = (state: RootState) => state.attack.tiles;
+export const selectAttackBoardBloqued = (state: RootState) => state.attack.bloqued;
