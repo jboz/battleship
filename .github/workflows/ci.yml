@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-publish:
+  battleship:
     runs-on: ubuntu-latest
 
     env:
