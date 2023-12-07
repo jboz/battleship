@@ -1,4 +1,5 @@
-@API=http://localhost:8080/api
+# @API=http://localhost:8080/api
+@API=https://battleship.ifocusit.ch/api
 
 ### games
 GET {{API}}/games
@@ -21,7 +22,7 @@ GET {{API}}/games/game1
 DELETE {{API}}/games/WTB1
 
 ### join
-PUT {{API}}/games/FBTC/join
+PUT {{API}}/games/NRPL/join
 Content-Type: application/json
 
 {

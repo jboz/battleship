@@ -20,13 +20,15 @@ concurrency:
 jobs:
   build-publish:
     runs-on: ubuntu-latest
+
     env:
       MVN: mvn --show-version --batch-mode
+
     steps:
       - name: jdk
         uses: actions/setup-java@v3
         with:
-          java-version: 20
+          java-version: 21
           distribution: adopt
 
       - name: checkout
@@ -39,18 +41,16 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: mvn clean compile
+      - name: clean compile
         run: $MVN clean compile
 
-      - name: mvn test
+      - name: test
         run: $MVN test
 
-      - name: mvn package -DskipTests -Dquarkus.container-image.push=true latest
+      - name: packaging and publish
         if: github.ref == 'refs/heads/main'
         run: >-
-          $MVN package -DskipTests
-          -Dquarkus.container-image.push=true
+          $MVN package -DskipTests -Dnative
           -Dquarkus.container-image.username=${{ secrets.DOCKER_USERNAME }}
           -Dquarkus.container-image.password=${{ secrets.DOCKER_PASSWORD }}
-          -Dquarkus.container-image.image=submarine.banan4.com/ifocusit/${{ github.repository }}:latest
           '-Dquarkus.container-image.labels."org.opencontainers.image.revision"='$GITHUB_SHA
