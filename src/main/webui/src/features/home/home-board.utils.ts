@@ -8,7 +8,7 @@ export const getMatchBoardTiles = (ship: Ship, startBoardTile: HomeBoardTile, ti
       if (tile.shipId) {
         return true;
       }
-      if (placementMode === 'horizontal') {
+      if (placementMode === 'vertical') {
         return (
           tile.coord.x === startBoardTile.coord.x &&
           tile.coord.y >= startBoardTile.coord.y &&

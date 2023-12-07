@@ -49,25 +49,25 @@ public class GamesResource {
         return service.create(request);
     }
 
-    @GET()
+    @GET
     @Path("/{code}")
     public GameSummary get(@RestPath("code") String code) {
         return service.get(code);
     }
 
-    @DELETE()
+    @DELETE
     @Path("/{code}")
     public void delete(@RestPath("code") String code) {
         service.delete(code);
     }
 
-    @PUT()
+    @PUT
     @Path("/{code}/join")
     public GameSummary join(@RestPath("code") String code, @Valid @NotNull GameJoining request) {
         return service.join(code, request);
     }
 
-    @PUT()
+    @PUT
     @Path("/{code}/shot")
     public AttackBoard shot(@RestPath("code") String code, @Valid @NotNull GameShot request) {
         return service.shot(code, request);
@@ -85,5 +85,11 @@ public class GamesResource {
     public void events(@RestPath("code") String code, @RestPath("player") PlayerId player, @Context SseEventSink sink) {
         eventsService.listen(code, player, sink);
         service.sendState(code);
+    }
+
+    @PUT()
+    @Path("/{code}/players/{player}/withdraw")
+    public void withdraw(@RestPath("code") String code, @RestPath("player") PlayerId player) {
+        service.withdraw(code, player);
     }
 }

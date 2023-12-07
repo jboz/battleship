@@ -1,3 +1,4 @@
+import { coordToString } from '../../app/components/utils';
 import { useSelector } from '../../app/store/hooks';
 import './shots-log.scss';
 import { selectLogs } from './shots-log.slice';
@@ -12,9 +13,7 @@ export const ShotsLogComponent = () => {
           <h3>log:</h3>
           <ul>
             {logs.map((log, index) => (
-              <li key={index}>
-                X{log.coord.x} - Y{log.coord.y}
-              </li>
+              <li key={index}>{coordToString(log.coord)}</li>
             ))}
           </ul>
         </>

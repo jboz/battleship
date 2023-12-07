@@ -19,6 +19,7 @@ public class Game {
     Player player2;
     @Setter
     PlayerId nextPlayerId;
+    PlayerId winner;
 
     public static Game create(String code, GameJoining creationRequest) {
         Game game = new Game();
@@ -68,14 +69,20 @@ public class Game {
     private void updateStatus() {
         if (player1.allIsTouched() || player2.allIsTouched()) {
             status = Status.FINISHED;
+            winner = player1.allIsTouched() ? PlayerId.player2 : PlayerId.player1;
         }
+    }
+
+    public void withdraw(PlayerId player) {
+        winner = player.reverse();
+        status = Status.WITHDRAW;
     }
 
     public boolean finished() {
         return Status.FINISHED.equals(status);
     }
 
-    public PlayerId winner() {
-        return player1.allIsTouched() ? PlayerId.player2 : PlayerId.player1;
+    public String playerName(PlayerId playerId) {
+        return player1().id().equals(playerId) ? player1().name() : player2().name();
     }
 }

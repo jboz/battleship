@@ -45,7 +45,7 @@ public class HomeBoard extends Board<HomeTile> {
 
     @JsonIgnore
     public boolean allIsTouched() {
-        return tiles.stream().allMatch(HomeTile::isTouched);
+        return tiles.stream().filter((HomeTile::hasShip)).allMatch(HomeTile::isTouched);
     }
 
     public String getShipIdIfDestroyed(Coordinate coords) {

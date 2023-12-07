@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import ch.ifocusit.game.battleship.domain.model.Game;
 import ch.ifocusit.game.battleship.domain.model.GameJoining;
 import ch.ifocusit.game.battleship.domain.model.GameShot;
 import ch.ifocusit.game.battleship.domain.model.GameSummary;
 import ch.ifocusit.game.battleship.domain.model.Player;
+import ch.ifocusit.game.battleship.domain.model.PlayerId;
 import ch.ifocusit.game.battleship.domain.model.boards.attack.AttackBoard;
 import ch.ifocusit.game.battleship.domain.model.events.FinishEvent;
 import ch.ifocusit.game.battleship.domain.model.events.PlayerEvent;
@@ -32,7 +35,7 @@ public class GamesService {
     }
 
     private String generateCode() {
-        return "game" + (games.size() + 1);
+        return RandomStringUtils.randomAlphanumeric(4).toUpperCase();
     }
 
     public GameSummary create(GameJoining request) {
@@ -84,7 +87,7 @@ public class GamesService {
                         attackTouched, game.nextPlayerId()));
 
         if (game.finished()) {
-            eventsService.publish(new FinishEvent(game.code(), game.winner()));
+            eventsService.publish(new FinishEvent(game.code(), game.playerName(game.winner())));
         }
         return source.attackBoard();
     }
@@ -107,5 +110,11 @@ public class GamesService {
         if (game.player2() != null) {
             eventsService.publish(new PlayerEvent(game.code(), game.player2()));
         }
+    }
+
+    public void withdraw(String code, PlayerId player) {
+        final var game = findByCode(code);
+        game.withdraw(player);
+        eventsService.publish(new FinishEvent(game.code(), game.playerName(game.winner())));
     }
 }

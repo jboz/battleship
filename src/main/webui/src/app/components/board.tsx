@@ -1,5 +1,5 @@
 import './board.scss';
-import { BoardTile } from './utils';
+import { AttackBoardTile, HomeBoardTile } from './utils';
 
 interface BoardComponentProps<T> {
   tiles: T[];
@@ -8,7 +8,7 @@ interface BoardComponentProps<T> {
   onMouseOut?: (tiles: T) => any;
 }
 
-export const BoardComponent = <T extends BoardTile>({ onClick, onMouseEnter, onMouseOut, tiles }: BoardComponentProps<T>) => {
+export const BoardComponent = ({ onClick, onMouseEnter, onMouseOut, tiles }: BoardComponentProps<HomeBoardTile | AttackBoardTile>) => {
   return (
     <div className="boardContainerX">
       <div className="boardHeaderX">
@@ -42,6 +42,8 @@ export const BoardComponent = <T extends BoardTile>({ onClick, onMouseEnter, onM
             <div
               key={index}
               className="cell"
+              data-x={tile.coord.x}
+              data-y={tile.coord.y}
               style={{ backgroundColor: tile.hoverColor || tile.color || '#e6e2f1' }}
               onClick={() => onClick(tile)}
               onMouseEnter={() => onMouseEnter && onMouseEnter(tile)}

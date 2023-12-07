@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import GameApi from '../app/api.service';
 import { addError, restoreDefaultState as restoreDefaultStateErrors } from '../app/errors/errors.slice';
-import { Game, GameJoining, PlayerEvent, PlayerId, PlayerJoinedEvent, ShotEvent } from '../app/model';
+import { FinishedEvent, Game, GameJoining, PlayerEvent, PlayerId, PlayerJoinedEvent, ShotEvent } from '../app/model';
 import { createAsyncThunk } from '../app/store/hooks';
 import { RootState } from '../app/store/store';
 import { restoreDefaultState as restoreDefaultStateAttack, setAttackBloqued, setAttackPlayer, setAttackTiles } from './attack/attack.slice';
@@ -17,6 +17,7 @@ import { log, restoreDefaultState as restoreDefaultStateLogs } from './shots-log
 interface GameState {
   game?: Game;
   connection?: EventSource;
+  winner?: string;
 }
 
 const initialState: GameState = {};
@@ -66,8 +67,8 @@ const listen = createAsyncThunk('game/listen', (_, { dispatch, getState }) => {
       dispatch(setAttackTiles(payload.player.attackBoard.tiles));
     });
     connection.addEventListener('FinishEvent', event => {
-      //const content = JSON.parse(event.data) as FinishedEvent;
-      // TODO forward event
+      const payload = JSON.parse(event.data) as FinishedEvent;
+      dispatch(setWinner(payload.winner));
     });
     connection.addEventListener('ShotEvent', event => {
       const shot = JSON.parse(event.data) as ShotEvent;
@@ -97,6 +98,7 @@ export const gameSlice = createSlice({
       }
       state.game = undefined;
       state.connection = undefined;
+      state.winner = undefined;
     },
     setGame: (state, { payload: game }: PayloadAction<Game>) => {
       state.game = { ...game };
@@ -108,11 +110,14 @@ export const gameSlice = createSlice({
     },
     setConnection: (state, { payload: connection }: PayloadAction<EventSource>) => {
       state.connection = connection;
+    },
+    setWinner: (state, { payload: winner }: PayloadAction<string>) => {
+      state.winner = winner;
     }
   }
 });
 
-const { setGame, setConnection, restoreDefaultState, setAttackPlayerName } = gameSlice.actions;
+const { setGame, setConnection, restoreDefaultState, setAttackPlayerName, setWinner } = gameSlice.actions;
 
 export const selectGameConnected = (state: RootState) => {
   return !!state.game.game;
@@ -122,3 +127,4 @@ export const selectHomePlayerName = (state: RootState) =>
   state.home.player === PlayerId.player1 ? state.game.game?.player1 : state.game.game?.player2;
 export const selectAttackPlayerName = (state: RootState) =>
   state.attack.player === PlayerId.player1 ? state.game.game?.player1 : state.game.game?.player2;
+export const selectWinner = (state: RootState) => state.game.winner;

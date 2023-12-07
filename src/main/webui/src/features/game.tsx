@@ -4,7 +4,7 @@ import { ErrorsComponent } from '../app/errors/errors.component';
 import { useDispatch, useSelector } from '../app/store/hooks';
 import { AttackBoard } from './attack/attack-board';
 import './game.scss';
-import { create, join, selectGameConnected } from './game.slice';
+import { create, join, selectGameConnected, selectWinner } from './game.slice';
 import { HomeBoard } from './home/home-board';
 import { selectHomeTiles, selectIsHomeBoardCompleted } from './home/home.slice';
 import { Settings } from './settings/settings';
@@ -18,6 +18,7 @@ function Game() {
   const homeTiles = useSelector(selectHomeTiles);
   const isHomeBoardCompleted = useSelector(selectIsHomeBoardCompleted);
   const connected = useSelector(selectGameConnected);
+  const winner = useSelector(selectWinner);
 
   const [gameCode, setGameCode] = useState('');
   const [playerName, setPlayerName] = useState(readPlayernameFomrLocalStorage());
@@ -80,6 +81,7 @@ function Game() {
           </div>
         )}
         {connected && <AttackBoard />}
+        {winner && <div className="overlay">The winner is: {winner}!!</div>}
       </main>
       {connected && (
         <>

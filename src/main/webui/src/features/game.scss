@@ -13,6 +13,7 @@
     flex: 1 1 auto;
     justify-content: center;
     align-items: center;
+    position: relative;
 
     .toolbar {
       display: flex;
@@ -36,6 +37,20 @@
         text-align: center;
         max-width: 21em;
       }
+    }
+
+    & > .overlay {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background-color: rgba($color: #000000, $alpha: 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: x-large;
     }
   }
 
@@ -64,19 +79,6 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    height: 80px;
     width: 100%;
   }
 }
-
-// @media ((min-width: 590px) and (max-width: 844px)) {
-//   .game aside {
-//     display: block;
-//   }
-// }
-
-// @media (min-width: 1130px) {
-//   .game aside {
-//     display: block;
-//   }
-// }

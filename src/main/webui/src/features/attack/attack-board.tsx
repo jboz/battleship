@@ -33,7 +33,7 @@ export const AttackBoard = () => {
         <BoardComponent tiles={tiles} onClick={onTileClick} />
         {!playerName && (
           <div className="overlay">
-            <span>Wainting for player</span>
+            <span>Waiting for player</span>
           </div>
         )}
         {bloqued && (
