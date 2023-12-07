@@ -1,0 +1,58 @@
+# @API=http://localhost:8080/api
+@API=https://battleship.ifocusit.ch/api
+
+### games
+GET {{API}}/games
+
+### create
+POST {{API}}/games
+Content-Type: application/json
+
+{
+  "player": "ma",
+  "board": {
+    "tiles": [{"coord":{"x":1,"y":1}},{"coord":{"x":2,"y":1}},{"coord":{"x":3,"y":1}},{"coord":{"x":4,"y":1}},{"coord":{"x":5,"y":1}},{"coord":{"x":6,"y":1}},{"coord":{"x":7,"y":1}},{"coord":{"x":8,"y":1}},{"coord":{"x":9,"y":1}},{"coord":{"x":10,"y":1}},{"coord":{"x":1,"y":2}},{"coord":{"x":2,"y":2}},{"coord":{"x":3,"y":2}},{"coord":{"x":4,"y":2}},{"coord":{"x":5,"y":2},"shipId":"Carrier","color":"#be456e"},{"coord":{"x":6,"y":2},"shipId":"Carrier","color":"#be456e"},{"coord":{"x":7,"y":2},"shipId":"Carrier","color":"#be456e"},{"coord":{"x":8,"y":2},"shipId":"Carrier","color":"#be456e"},{"coord":{"x":9,"y":2},"shipId":"Carrier","color":"#be456e"},{"coord":{"x":10,"y":2}},{"coord":{"x":1,"y":3}},{"coord":{"x":2,"y":3},"shipId":"Battleship","color":"#0494ff"},{"coord":{"x":3,"y":3}},{"coord":{"x":4,"y":3}},{"coord":{"x":5,"y":3}},{"coord":{"x":6,"y":3}},{"coord":{"x":7,"y":3}},{"coord":{"x":8,"y":3}},{"coord":{"x":9,"y":3}},{"coord":{"x":10,"y":3}},{"coord":{"x":1,"y":4}},{"coord":{"x":2,"y":4},"shipId":"Battleship","color":"#0494ff"},{"coord":{"x":3,"y":4}},{"coord":{"x":4,"y":4},"shipId":"Cruiser1","color":"#04ff8a"},{"coord":{"x":5,"y":4},"shipId":"Cruiser1","color":"#04ff8a"},{"coord":{"x":6,"y":4},"shipId":"Cruiser1","color":"#04ff8a"},{"coord":{"x":7,"y":4}},{"coord":{"x":8,"y":4},"shipId":"Cruiser2","color":"#04ff8a"},{"coord":{"x":9,"y":4},"shipId":"Cruiser2","color":"#04ff8a"},{"coord":{"x":10,"y":4},"shipId":"Cruiser2","color":"#04ff8a"},{"coord":{"x":1,"y":5}},{"coord":{"x":2,"y":5},"shipId":"Battleship","color":"#0494ff"},{"coord":{"x":3,"y":5}},{"coord":{"x":4,"y":5}},{"coord":{"x":5,"y":5}},{"coord":{"x":6,"y":5}},{"coord":{"x":7,"y":5}},{"coord":{"x":8,"y":5}},{"coord":{"x":9,"y":5}},{"coord":{"x":10,"y":5}},{"coord":{"x":1,"y":6}},{"coord":{"x":2,"y":6},"shipId":"Battleship","color":"#0494ff"},{"coord":{"x":3,"y":6}},{"coord":{"x":4,"y":6}},{"coord":{"x":5,"y":6}},{"coord":{"x":6,"y":6}},{"coord":{"x":7,"y":6}},{"coord":{"x":8,"y":6}},{"coord":{"x":9,"y":6},"shipId":"Submarine1","color":"#04ffde"},{"coord":{"x":10,"y":6}},{"coord":{"x":1,"y":7}},{"coord":{"x":2,"y":7}},{"coord":{"x":3,"y":7}},{"coord":{"x":4,"y":7}},{"coord":{"x":5,"y":7}},{"coord":{"x":6,"y":7},"shipId":"Destroyer","color":"#af54a0"},{"coord":{"x":7,"y":7}},{"coord":{"x":8,"y":7}},{"coord":{"x":9,"y":7},"shipId":"Submarine1","color":"#04ffde"},{"coord":{"x":10,"y":7}},{"coord":{"x":1,"y":8}},{"coord":{"x":2,"y":8}},{"coord":{"x":3,"y":8}},{"coord":{"x":4,"y":8}},{"coord":{"x":5,"y":8}},{"coord":{"x":6,"y":8},"shipId":"Destroyer","color":"#af54a0"},{"coord":{"x":7,"y":8}},{"coord":{"x":8,"y":8}},{"coord":{"x":9,"y":8},"shipId":"Submarine1","color":"#04ffde"},{"coord":{"x":10,"y":8}},{"coord":{"x":1,"y":9}},{"coord":{"x":2,"y":9}},{"coord":{"x":3,"y":9}},{"coord":{"x":4,"y":9}},{"coord":{"x":5,"y":9}},{"coord":{"x":6,"y":9}},{"coord":{"x":7,"y":9}},{"coord":{"x":8,"y":9}},{"coord":{"x":9,"y":9}},{"coord":{"x":10,"y":9}},{"coord":{"x":1,"y":10},"shipId":"Submarine2","color":"#04ffde"},{"coord":{"x":2,"y":10},"shipId":"Submarine2","color":"#04ffde"},{"coord":{"x":3,"y":10},"shipId":"Submarine2","color":"#04ffde"},{"coord":{"x":4,"y":10}},{"coord":{"x":5,"y":10}},{"coord":{"x":6,"y":10}},{"coord":{"x":7,"y":10}},{"coord":{"x":8,"y":10}},{"coord":{"x":9,"y":10}},{"coord":{"x":10,"y":10}}]
+  }
+}
+
+### game
+GET {{API}}/games/game1
+
+### delete
+DELETE {{API}}/games/WTB1
+
+### join
+PUT {{API}}/games/NRPL/join
+Content-Type: application/json
+
+{
+  "player": "ju",
+  "board": {
+    "tiles":[{"coord":{"x":1,"y":1}},{"coord":{"x":2,"y":1}},{"coord":{"x":3,"y":1}},{"coord":{"x":4,"y":1}},{"coord":{"x":5,"y":1}},{"coord":{"x":6,"y":1}},{"coord":{"x":7,"y":1}},{"coord":{"x":8,"y":1}},{"coord":{"x":9,"y":1}},{"coord":{"x":10,"y":1},"shipId":"Battleship","color":"#0494ff"},{"coord":{"x":1,"y":2}},{"coord":{"x":2,"y":2}},{"coord":{"x":3,"y":2}},{"coord":{"x":4,"y":2}},{"coord":{"x":5,"y":2}},{"coord":{"x":6,"y":2}},{"coord":{"x":7,"y":2}},{"coord":{"x":8,"y":2}},{"coord":{"x":9,"y":2}},{"coord":{"x":10,"y":2},"shipId":"Battleship","color":"#0494ff"},{"coord":{"x":1,"y":3},"shipId":"Cruiser1","color":"#04ff8a"},{"coord":{"x":2,"y":3}},{"coord":{"x":3,"y":3}},{"coord":{"x":4,"y":3},"shipId":"Destroyer","color":"#af54a0"},{"coord":{"x":5,"y":3},"shipId":"Destroyer","color":"#af54a0"},{"coord":{"x":6,"y":3}},{"coord":{"x":7,"y":3}},{"coord":{"x":8,"y":3}},{"coord":{"x":9,"y":3}},{"coord":{"x":10,"y":3},"shipId":"Battleship","color":"#0494ff"},{"coord":{"x":1,"y":4},"shipId":"Cruiser1","color":"#04ff8a"},{"coord":{"x":2,"y":4}},{"coord":{"x":3,"y":4}},{"coord":{"x":4,"y":4}},{"coord":{"x":5,"y":4}},{"coord":{"x":6,"y":4}},{"coord":{"x":7,"y":4}},{"coord":{"x":8,"y":4}},{"coord":{"x":9,"y":4}},{"coord":{"x":10,"y":4},"shipId":"Battleship","color":"#0494ff"},{"coord":{"x":1,"y":5},"shipId":"Cruiser1","color":"#04ff8a"},{"coord":{"x":2,"y":5}},{"coord":{"x":3,"y":5}},{"coord":{"x":4,"y":5}},{"coord":{"x":5,"y":5}},{"coord":{"x":6,"y":5}},{"coord":{"x":7,"y":5}},{"coord":{"x":8,"y":5}},{"coord":{"x":9,"y":5}},{"coord":{"x":10,"y":5}},{"coord":{"x":1,"y":6}},{"coord":{"x":2,"y":6}},{"coord":{"x":3,"y":6}},{"coord":{"x":4,"y":6}},{"coord":{"x":5,"y":6},"shipId":"Carrier","color":"#be456e"},{"coord":{"x":6,"y":6},"shipId":"Carrier","color":"#be456e"},{"coord":{"x":7,"y":6},"shipId":"Carrier","color":"#be456e"},{"coord":{"x":8,"y":6},"shipId":"Carrier","color":"#be456e"},{"coord":{"x":9,"y":6},"shipId":"Carrier","color":"#be456e"},{"coord":{"x":10,"y":6}},{"coord":{"x":1,"y":7}},{"coord":{"x":2,"y":7}},{"coord":{"x":3,"y":7}},{"coord":{"x":4,"y":7}},{"coord":{"x":5,"y":7}},{"coord":{"x":6,"y":7}},{"coord":{"x":7,"y":7}},{"coord":{"x":8,"y":7}},{"coord":{"x":9,"y":7}},{"coord":{"x":10,"y":7}},{"coord":{"x":1,"y":8},"shipId":"Cruiser2","color":"#04ff8a"},{"coord":{"x":2,"y":8}},{"coord":{"x":3,"y":8}},{"coord":{"x":4,"y":8}},{"coord":{"x":5,"y":8}},{"coord":{"x":6,"y":8}},{"coord":{"x":7,"y":8},"shipId":"Submarine2","color":"#04ffde"},{"coord":{"x":8,"y":8},"shipId":"Submarine2","color":"#04ffde"},{"coord":{"x":9,"y":8},"shipId":"Submarine2","color":"#04ffde"},{"coord":{"x":10,"y":8}},{"coord":{"x":1,"y":9},"shipId":"Cruiser2","color":"#04ff8a"},{"coord":{"x":2,"y":9}},{"coord":{"x":3,"y":9},"shipId":"Submarine1","color":"#04ffde"},{"coord":{"x":4,"y":9},"shipId":"Submarine1","color":"#04ffde"},{"coord":{"x":5,"y":9},"shipId":"Submarine1","color":"#04ffde"},{"coord":{"x":6,"y":9}},{"coord":{"x":7,"y":9}},{"coord":{"x":8,"y":9}},{"coord":{"x":9,"y":9}},{"coord":{"x":10,"y":9}},{"coord":{"x":1,"y":10},"shipId":"Cruiser2","color":"#04ff8a"},{"coord":{"x":2,"y":10}},{"coord":{"x":3,"y":10}},{"coord":{"x":4,"y":10}},{"coord":{"x":5,"y":10}},{"coord":{"x":6,"y":10}},{"coord":{"x":7,"y":10}},{"coord":{"x":8,"y":10}},{"coord":{"x":9,"y":10}},{"coord":{"x":10,"y":10}}]
+  },
+  "gameCode": "E3CN"
+}
+
+### shot
+PUT {{API}}/games/game1/shot
+Content-Type: application/json
+
+{
+    "target": "player2",
+    "coords": {
+        "x": 1,
+        "y": 2
+    }
+}
+
+### bus
+#curl -N http://localhost:8080/api/games/game1/players/player1/events
+GET {{API}}/games/game1/players/player1/events
+Accept: text/event-stream
+
+#### player by name
+GET {{API}}/games/game1/players?name=ma
+
+### withdraw
+PUT {{API}}/games/VS6U/players/player1/withdraw
+Content-Type: application/json

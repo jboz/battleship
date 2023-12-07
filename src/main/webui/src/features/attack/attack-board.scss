@@ -1,0 +1,35 @@
+.attack-board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1em;
+
+  & > title {
+    display: flex;
+    gap: 0.5em;
+    justify-content: center;
+    align-items: end;
+  }
+
+  & > main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    & > .overlay {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      background-color: rgba($color: #000000, $alpha: 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: x-large;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+.shots-log {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  & > h3 {
+    margin: 1em 0;
+  }
+
+  & > ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+
+    & > li {
+      color: gray;
+      font-style: italic;
+    }
+    & > li:first-child {
+      color: white;
+      font-style: normal;
+    }
+  }
+}

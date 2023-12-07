@@ -1,0 +1,32 @@
+.errors {
+  margin: 0;
+  padding: 1em;
+  background-color: whitesmoke;
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+  overflow: auto;
+
+  & > ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    vertical-align: middle;
+    height: 100%;
+    width: 100%;
+    list-style: none;
+    color: #b11a1a;
+    font-weight: bolder;
+  }
+
+  & > button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 0 10px;
+    background-color: transparent;
+    border: none;
+    color: #b11a1a;
+    font-size: large;
+    cursor: pointer;
+  }
+}

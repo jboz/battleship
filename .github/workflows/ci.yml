@@ -1,0 +1,56 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ci.yml"
+      - "src/**"
+      - "pom.xml"
+  pull_request:
+    branches: [main]
+
+permissions:
+  packages: write
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  battleship:
+    runs-on: ubuntu-latest
+
+    env:
+      MVN: mvn --show-version --batch-mode
+
+    steps:
+      - name: jdk
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: adopt
+
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: cache ~/.m2
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: clean compile
+        run: $MVN clean compile
+
+      - name: test
+        run: $MVN test
+
+      - name: packaging and publish
+        if: github.ref == 'refs/heads/main'
+        run: >-
+          $MVN package -DskipTests -Dnative
+          -Dquarkus.container-image.username=${{ secrets.DOCKER_USERNAME }}
+          -Dquarkus.container-image.password=${{ secrets.DOCKER_PASSWORD }}
+          '-Dquarkus.container-image.labels."org.opencontainers.image.revision"='$GITHUB_SHA

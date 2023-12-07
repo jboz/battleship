@@ -2,6 +2,6 @@
 
 Web version of the famous battleship game.
 
-![Preparation](/docs/preparation.png)
+![Preparation](docs/preparation.png)
 
-![Game](/docs/game.png)
+![Game](docs/game.png)
