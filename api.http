@@ -16,13 +16,13 @@ Content-Type: application/json
 }
 
 ### game
-GET {{API}}/games/game1
+GET {{API}}/games/85P2
 
 ### delete
-DELETE {{API}}/games/WTB1
+DELETE {{API}}/games/85P2
 
 ### join
-PUT {{API}}/games/NRPL/join
+PUT {{API}}/games/LT51/join
 Content-Type: application/json
 
 {
@@ -34,7 +34,7 @@ Content-Type: application/json
 }
 
 ### shot
-PUT {{API}}/games/game1/shot
+PUT {{API}}/games/7MBZ/shot
 Content-Type: application/json
 
 {
@@ -47,12 +47,12 @@ Content-Type: application/json
 
 ### bus
 #curl -N http://localhost:8080/api/games/game1/players/player1/events
-GET {{API}}/games/game1/players/player1/events
+GET {{API}}/games/HHOD/players/player1/events
 Accept: text/event-stream
 
 #### player by name
 GET {{API}}/games/game1/players?name=ma
 
 ### withdraw
-PUT {{API}}/games/VS6U/players/player1/withdraw
+PUT {{API}}/games/7MBZ/players/player1/withdraw
 Content-Type: application/json

@@ -55,7 +55,7 @@ jobs:
       - name: packaging and publish
         if: github.ref == 'refs/heads/main'
         run: >-
-          $MVN package -DskipTests -Dnative
+          $MVN package -DskipTests
           -Dquarkus.container-image.username=${{ secrets.DOCKER_USERNAME }}
           -Dquarkus.container-image.password=${{ secrets.DOCKER_PASSWORD }}
           '-Dquarkus.container-image.labels."org.opencontainers.image.revision"='$GITHUB_SHA
