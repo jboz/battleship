@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Coordinate } from '../../app/model';
-import { RootState } from '../../app/store/store';
+import { Coordinate } from '../../ core/model';
+import { RootState } from '../../ core/store/store';
 
 interface ShotsLogState {
   logs: Log[];

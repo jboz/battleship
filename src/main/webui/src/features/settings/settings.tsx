@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from '../../app/store/hooks';
+import { useDispatch, useSelector } from '../../ core/store/hooks';
 import { disconnect, selectGameCode } from '../game.slice';
 import { ShotsLogComponent } from '../shots-log/shots-log.component';
 import './settings.scss';

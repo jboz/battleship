@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { HomeBoardTile, initTiles } from '../../app/components/utils';
-import { Coordinate, HomeTile, PlayerId } from '../../app/model';
-import { RootState } from '../../app/store/store';
+import { HomeBoardTile, initTiles } from '../../ core/components/board.utils';
+import { Coordinate, HomeTile, PlayerId } from '../../ core/model';
+import { RootState } from '../../ core/store/store';
 import { getMatchBoardTiles, getNextShip } from './home-board.utils';
 
 type PlacementMode = 'vertical' | 'horizontal';

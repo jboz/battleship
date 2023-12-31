@@ -1,8 +1,8 @@
 import { useDispatch } from 'react-redux';
-import { BoardComponent } from '../../app/components/board';
-import { HomeBoardTile } from '../../app/components/utils';
-import { useSelector } from '../../app/store/hooks';
-import { useHotkeys } from '../../app/use-hotkeys';
+import { HomeBoardTile } from '../../ core/components/board.utils';
+import { BoardComponent } from '../../ core/components/board/board';
+import { useSelector } from '../../ core/store/hooks';
+import { useHotkeys } from '../../ core/use-hotkeys';
 import { selectGameConnected, selectHomePlayerName } from '../game.slice';
 import './home-board.scss';
 import {

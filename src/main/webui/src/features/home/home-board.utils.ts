@@ -1,4 +1,4 @@
-import { HomeBoardTile } from '../../app/components/utils';
+import { HomeBoardTile } from '../../ core/components/board.utils';
 import { Ship } from './home.slice';
 
 export const getMatchBoardTiles = (ship: Ship, startBoardTile: HomeBoardTile, tiles: HomeBoardTile[], placementMode: string) =>
