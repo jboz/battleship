@@ -1,7 +1,7 @@
 import { useWindowSize } from '@uidotdev/usehooks';
 import { useEffect, useState } from 'react';
-import { ErrorsComponent } from '../app/errors/errors.component';
-import { useDispatch, useSelector } from '../app/store/hooks';
+import { ErrorsComponent } from '../ core/errors/errors.component';
+import { useDispatch, useSelector } from '../ core/store/hooks';
 import { AttackBoard } from './attack/attack-board';
 import './game.scss';
 import { create, join, selectGameConnected, selectWinner } from './game.slice';

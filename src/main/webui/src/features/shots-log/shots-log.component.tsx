@@ -1,5 +1,5 @@
-import { coordToString } from '../../app/components/utils';
-import { useSelector } from '../../app/store/hooks';
+import { coordToString } from '../../ core/components/board.utils';
+import { useSelector } from '../../ core/store/hooks';
 import './shots-log.scss';
 import { selectLogs } from './shots-log.slice';
 

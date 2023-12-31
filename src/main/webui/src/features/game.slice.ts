@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import GameApi from '../app/api.service';
-import { addError, restoreDefaultState as restoreDefaultStateErrors } from '../app/errors/errors.slice';
-import { FinishedEvent, Game, GameJoining, PlayerEvent, PlayerId, PlayerJoinedEvent, ShotEvent } from '../app/model';
-import { createAsyncThunk } from '../app/store/hooks';
-import { RootState } from '../app/store/store';
+import GameApi from '../ core/api.service';
+import { addError, restoreDefaultState as restoreDefaultStateErrors } from '../ core/errors/errors.slice';
+import { FinishedEvent, Game, GameJoining, PlayerEvent, PlayerId, PlayerJoinedEvent, ShotEvent } from '../ core/model';
+import { createAsyncThunk } from '../ core/store/hooks';
+import { RootState } from '../ core/store/store';
 import { restoreDefaultState as restoreDefaultStateAttack, setAttackBloqued, setAttackPlayer, setAttackTiles } from './attack/attack.slice';
 import {
   clearShipSelection,

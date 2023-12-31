@@ -1,5 +1,5 @@
+import { AttackBoardTile, HomeBoardTile } from '../board.utils';
 import './board.scss';
-import { AttackBoardTile, HomeBoardTile } from './utils';
 
 interface BoardComponentProps<T> {
   tiles: T[];

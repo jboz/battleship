@@ -1,6 +1,6 @@
 .errors {
   margin: 0;
-  padding: 1em;
+  padding: 0 1em;
   background-color: whitesmoke;
   opacity: 0;
   transition: all 0.2s ease-in-out;
@@ -16,6 +16,10 @@
     list-style: none;
     color: #b11a1a;
     font-weight: bolder;
+
+    & > li {
+      padding: 0.5em 0;
+    }
   }
 
   & > button {

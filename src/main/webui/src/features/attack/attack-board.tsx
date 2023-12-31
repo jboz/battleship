@@ -1,6 +1,6 @@
-import { BoardComponent } from '../../app/components/board';
-import { AttackBoardTile } from '../../app/components/utils';
-import { useDispatch, useSelector } from '../../app/store/hooks';
+import { AttackBoardTile } from '../../ core/components/board.utils';
+import { BoardComponent } from '../../ core/components/board/board';
+import { useDispatch, useSelector } from '../../ core/store/hooks';
 import { selectAttackPlayerName } from '../game.slice';
 import './attack-board.scss';
 import { selectAttackBoardBloqued, selectAttackTiles, shot } from './attack.slice';

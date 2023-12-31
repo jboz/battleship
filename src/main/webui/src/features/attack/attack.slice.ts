@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import GameApi from '../../app/api.service';
-import { AttackBoardTile, initTiles } from '../../app/components/utils';
-import { AttackTile, Coordinate, PlayerId, Tile } from '../../app/model';
-import { createAsyncThunk } from '../../app/store/hooks';
-import { RootState } from '../../app/store/store';
+import GameApi from '../../ core/api.service';
+import { AttackBoardTile, initTiles } from '../../ core/components/board.utils';
+import { AttackTile, Coordinate, PlayerId, Tile } from '../../ core/model';
+import { createAsyncThunk } from '../../ core/store/hooks';
+import { RootState } from '../../ core/store/store';
 import { selectGameCode } from '../game.slice';
 
 interface AttackState {
